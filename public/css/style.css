@@ -1,0 +1,106 @@
+body {
+  background: #11010;
+  color: #eeeeee;
+  font-weight: 300;
+  margin: 0;
+  display: flexbox;
+  align-items: center;
+  font-family: Helvetica neue, roboto;
+  height: 100%;
+}
+
+.ui.segment {
+  background: #226688;
+  box-shadow: 0.2vh 0.2vh #001100;
+  display: flexbox;
+  width: 100%;
+}
+.ui.styled.accordion {
+  background: #226688;
+}
+.active.content {
+  color: #001100;
+  font-family: Helvetica;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.ct-chart {
+  background: #eeeeee;
+  border-radius: 10px;
+    box-shadow: 0.2vh 0.2vh #001100;
+}
+
+.accordion {
+  margin: 2vh;
+}
+
+
+.center-horizontal {
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+  height: 80%;
+  width: 100%;
+}
+/* .ui.label {
+  display: flex;
+  overflow-wrap: wrap;
+  padding: 5%;
+} */
+
+th {
+  text-overflow: wrap;
+}
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+
+}
+
+.flex-container > .inline {
+  display: inline;
+  align-content: center;
+}
+.ui.labeled.input {
+  padding: 2.5%;
+}
+
+.flex-left {
+  display: flex;
+  justify-content: left;
+}
+/* ui.card.balloon-vertical {
+  display: flex;
+  height: 100%;
+} */
+/* 
+/* .ui.centered.segment {
+  /* display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center; }*/
+
+
+/* .container {
+
+    height: 100%;
+} */
+
+
+
+
+img {
+  width: 56px;
+  height: 48px;
+}
+
+h1 {
+  font-weight: 200;
+  font-style: 26px;
+  margin: 10px;
+}

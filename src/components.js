@@ -98,7 +98,7 @@ class AddSetButton extends React.Component
   }
 }
 
-class ExerciseSetForm extends React.Component()
+class ExerciseSetForm extends React.Component
 {
   render() {
     return React.createElement('form', { onSubmit: () => {} }, [

@@ -21,13 +21,23 @@ class ExerciseSet extends React.Component {
 class Exercise extends React.Component {
     constructor(props) {
       super(props);
-      this.state = { Completed: false };
+      this.state = { Completed: false, sets: []}
     }
 
+    componentDidMount() {
+      this.setState({ Completed: false, sets: []});
+    }
     addSet(set) {
-      this.props.sets.push(set);
+      var newSet = this.state.sets;
+      this.setState(() => {
+        
+        if (newSet == undefined) {
+          newSet = [];
+        }
+        newSet.push(set);
+        return { sets: newSet};
+      });
     }
-
 
     render() {
       var React = require('react');
@@ -45,7 +55,7 @@ class Exercise extends React.Component {
                 React.createElement('th', null, 'Reps Completed')
               ]
             )),
-            React.createElement('tbody', null, this.props.sets.map(s => s.render()))
+            React.createElement('tbody', null, this.state.sets.map(s => s.render()))
         )
       )
     ]);
@@ -53,37 +63,58 @@ class Exercise extends React.Component {
 }
 
 class WorkoutRoutine extends React.Component {
+
   constructor(props) {
-    if (props == undefined) {
-      props = {
-        exercises: []
-      };
-    }
-    else if (props.exercises == undefined) {
-      props.exercises = [];
-    }
     super(props);
+    this.state = { exercises: [] }
   }
 
   addExercise(exercise)
   {
-    this.props.exercises.push(exercise);
+    var newExercises = this.state.exercises;
+    newExercises.push(exercise);
+    this.setState({ exercises: newExercises})
+
+  }
+  componentDidMount() {
+    this.setState({ exercises: [] });
   }
 
   render() {
-    return React.createElement('div', { className: "ui list", id: "workout-exercises-list"}, this.props.exercises.map(exercise => exercise.render()) )
+    return React.createElement('div', { className: "ui list", id: "workout-exercises-list"}, this.state.exercises.map(exercise => exercise.render()) )
   } 
 }
 
-// class AddExerciseButton extends React.Component
-// {
+class AddExerciseButton extends React.Component
+{
+  render() {
+    return React.createElement('div', { className: "ui button "});
+  }
+}
+class AddSetButton extends React.Component
+{
+  render() {
+    return React.createElement('div', { className: "ui button "});
+  }
+}
 
-// }
+class ExerciseSetForm extends React.Component()
+{
+  render() {
+    return React.createElement('form', { onSubmit: () => {} }, [
+      React.createElement('label', null, [
+        "Weight",
+        React.createElement("input", {type: "text"})
+      ])
+    ]);
+  }
+}
 
 module.exports = {};
 module.exports.Exercise = Exercise;
 module.exports.ExerciseSet = ExerciseSet;
 module.exports.WorkoutRoutine = WorkoutRoutine;
+module.exports.AddExerciseButton = AddExerciseButton;
 
 
 

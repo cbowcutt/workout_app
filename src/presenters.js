@@ -38,13 +38,35 @@ class Presenter {
 class WorkoutRoutinePresenter extends Presenter {
 	constructor() { 
 		super()
+		this.change = false;
 	}
 	
-	SubscribeToModel(model) {
-		this.model = model;
+	SubscribeToModel(workoutRoutineModel) {
+		this.model = workoutRoutineModel;
 		if (this.view == undefined) {
-			this.view = new components.WorkoutRoutine(model.data);
+			this.view = new components.WorkoutRoutine(workoutRoutineModel.data);
+			this.view.subscribeToPresenter(this);
+			this.subscribeToComponent(this.view);
 		}
+	}
+
+	subscribeToComponent(component) {
+		this.view = component;
+	}
+
+	exerciseAdded(event) {
+		var lastExerciseIndex = this.view.state.exercises.length - 1;
+		var newExerciseProps = this.view.state.exercises[lastExerciseIndex].props;
+		var newExerciseState = this.view.state.exercises[lastExerciseIndex].state;
+		var newExerciseData = {
+			exercise_name: newExerciseProps.exercise_name,
+			sets: newExerciseState.sets
+		}
+		this.model.addExercise(newExerciseData)
+	}
+
+	inputReceived(event) {
+		this.exerciseAdded(event);
 	}
 }
 

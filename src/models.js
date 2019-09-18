@@ -20,15 +20,27 @@ class Model {
 }
 
 class WorkoutRoutineModel extends Model {
+	constructor(data) {
+		super(data);
+		if (this.data.exercises == undefined) {
+			this.data.exercises = [];
+		}
+	}
+
+	addExercise(newExerciseData) {
+		this.data.exercises.push(new ExerciseModel(newExerciseData));
+	}
 }
 
 class ExerciseModel extends Model {
 	constructor(data) {
-		if (data.exercise_name == undefined)
+		super(data);
+		if (this.data.exercise_name == undefined)
 		{
 			throw new Error("data.exercise_name must not be undefined");
 		}
-		super(data);
+
+
 	}
 
 }

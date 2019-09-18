@@ -2,14 +2,15 @@ var React = require('react');
 class ExerciseSet extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { Completed: false, reps_completed: this.props.reps_completed };
-    this.onChange = this.onChange.bind(this);
+
+    this.handleChange = this.handleChange.bind(this);
+    this.state = { reps_completed: this.props.reps_completed };
   }
 
-  onChange(e) {
-    console.log(e.target);
-    var reps = e.target.value;
-    this.setState(state => ({ Completed: false, reps_completed: e.target.value}))
+  handleChange(e) {
+    var newState = { reps_completed: e.target.value};
+    console.log(newState);
+    this.state = newState;
   }
 
   render() {
@@ -18,7 +19,7 @@ class ExerciseSet extends React.Component {
         React.createElement('td', { key: 'weight-' + this.props.id}, this.props.weight),
         React.createElement('td', { key: 'rep_goal-' + this.props.id}, this.props.rep_goal),
         React.createElement('td', { id: "reps_completed-" + this.props.id, key: 'reps_completed-' + this.props.id},
-          React.createElement('input',{onChange: this.onChange, value: this.state.reps_completed})
+          React.createElement('input',{ onChange: this.handleChange, value: this.state.reps_completed})
         )
       ]
 
@@ -65,21 +66,36 @@ class WorkoutRoutine extends React.Component {
   constructor(props) {
     super(props);
     this.state = { exercises: [] }
+    this.onChange = this.handleChange.bind(this);
   }
 
   addExercise(exercise)
   {
     var newExercises = this.state.exercises;
     newExercises.push(exercise);
-    this.setState({ exercises: newExercises})
+    this.state = { exercises: newExercises};
+    
+  }
 
+  exerciseAdded(event) {
+    console.log(event);
+  }
+
+  handleChange(event) {
+    if (this.presenter == undefined) {
+      return new Error("presenter not defined");
+    }
+    this.presenter.inputReceived(event);
+  }
+
+  subscribeToPresenter(presenter)  {
+    this.presenter = presenter;
   }
   componentDidMount() {
-    this.setState({ exercises: [] });
   }
 
   render() {
-    return React.createElement('div', { className: "ui list", id: "workout-exercises-list"}, this.state.exercises.map(exercise => exercise.render()) )
+    return React.createElement('div', { className: "ui list", id: this.props.id, onChange: this.handleChange.bind(this)}, this.state.exercises.map(exercise => exercise.render()) )
   } 
 }
 

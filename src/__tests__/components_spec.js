@@ -9,7 +9,7 @@ import { getExerciseTestObject, getExerciseSetTestObject, getWorkoutRoutineTestO
 
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
-import { act } from "react-dom/test-utils";
+import { act, Simulate } from "react-dom/test-utils";
 
 let container = null;
 beforeEach(() => {
@@ -24,10 +24,6 @@ afterEach(() => {
   container.remove();
   container = null;
 });
-
-
-
-
 
 it("Exercise should be able to have ExcerciseSets added to it", function () {
 
@@ -49,33 +45,16 @@ it("Exercise should have a name", function () {
 })
 
 
-it("ExcerciseSet should have weight, rep_goal and reps_completed attributes", function () {
-	var testObject = getExerciseSetTestObject()
-	expect(testObject.props.weight).toBe(125);
-	expect(testObject.props.rep_goal).toBe(5);
-	expect(testObject.props.reps_completed).toBe(5);
-});
 
-it("Exercise should update when input entered into #reps_completed-<id>", function () {
-	let testObject = getExerciseSetTestObject();
-    act(() => {
-        render(testObject.render(), container)  ;    
-    }, () => {
-        const input = container.querySelector("tr > td > input");
-        input.value = 4;
-        Simulate.change(input);
-        expect(testObject.state.reps_completed).toBe("4");
-    })
-})
 
 
 it("WorkoutRoutine should render without any exercises", function () {
+    expect(container.querySelector("#test-workoutRoutine")).toBe(null);
 	var routine = getWorkoutRoutineTestObject();
 	act(() => {
 		render(routine.render(), container);
-	}, () => {
-		expect(routine).toBeDefined();
 	})
+    expect(container.querySelector("#test-workoutRoutine")).toBeDefined();
 	
 });
 
@@ -84,11 +63,11 @@ it("WorkoutRoutine should be able to have exercises added", function () {
 	act(() => {
 		render(routine.render(), container);
 	}, () => {
-		expect(routine.state.exercises.length).toBe(0);
-		routine.addExercise(new Exercise({ id: 1, exercise_name: "rows"}));
-		expect(routine.state.exercises.length).toBe(1);
-	})
 
+    })
+    expect(routine.state.exercises.length).toBe(0);
+    routine.addExercise(new Exercise({ id: 1, exercise_name: "rows"}));
+    expect(routine.state.exercises.length).toBe(1);
 })
 
 

@@ -20,7 +20,7 @@ function getExerciseModelTestObject() {
 }
 
 function getWorkoutRoutineTestObject() {
-	return new WorkoutRoutine()
+	return new WorkoutRoutine({ id: "test-workoutRoutine"})
 }
 
 function getWorkoutRoutineModelTestObject() {

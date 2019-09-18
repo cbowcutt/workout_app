@@ -3,13 +3,10 @@ var components = require('./components.js');
 var WorkoutRoutine = components.WorkoutRoutine;
 var Exercise = components.Exercise;
 var ExerciseSet = components.ExerciseSet;
-var workout = new WorkoutRoutine();
-workout.addExercise(new Exercise({ exercise_name: "squat"}));
-// var workout = new components.WorkoutRoutine({ exercises: [
-//     new components.Exercise({exercise_name: "Squat", sets: [ new components.ExerciseSet({weight: 3, rep_goal: 5, reps_completed: 5})]}),
-//     new components.Exercise({exercise_name: "Deadlift", sets: [ new components.ExerciseSet({weight: 4, rep_goal: 5, reps_completed: 5})]}),
-//     new components.Exercise({exercise_name: "Bench Press", sets: [ new components.ExerciseSet({weight: 4, rep_goal: 5, reps_completed: 5})]})
-//   ]});
+var workout = new WorkoutRoutine({id: "myWorkout"});
+workout.addExercise(new Exercise({ id: "exercise-squat",exercise_name: "squat"}));
+workout.state.exercises[0].addSet(new components.ExerciseSet({ id: "set", weight: 3, rep_goal: 5, reps_completed: 5 }));
+
   var container = document.getElementById('workout-container')
   ReactDOM.render(workout.render(), container);
   

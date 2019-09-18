@@ -4,18 +4,21 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest ./src/__tests__/.*spec.*"
+    "test": "jest ./src/__tests__/.*spec.*",
+    "bundle": "browserify ./src/app.js -o ./public/js/app.js",
+    "serve": "npx serve"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "browserify": "*",
-    "jasmine": "*",
-    "jest": "*",
-    "react-dom": "*",
     "@babel/preset-env": "*",
     "@babel/preset-react": "*",
     "babel-jest": "*",
+    "browserify": "*",
+    "jasmine": "*",
+    "jest": "^25.0.0",
+    "npx": "*",
+    "react-dom": "*",
     "react-test-renderer": "*"
   },
   "dependencies": {

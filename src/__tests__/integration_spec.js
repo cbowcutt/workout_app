@@ -34,7 +34,7 @@ it("WorkoutRoutinePresenter should create a WorkoutRoutineComponent if view does
 	expect(testObject.view).toBeDefined();
 })
 
-it("WorkoutRoutinePesenter should be notified when its WorkoutRoutine component dispatches a 'change' event", function () {
+it("WorkoutRoutinePresenter should be notified when its WorkoutRoutine component dispatches a 'change' event", function () {
 
     var presenter = getWorkoutRoutinePresenterTestObject();
     var model = getWorkoutRoutineModelTestObject();
@@ -53,7 +53,4 @@ it("WorkoutRoutinePesenter should be notified when its WorkoutRoutine component 
     //console.log(component.state.exercises);
 
     expect(model.data.exercises[0].data.exercise_name).toBe("ex");
-    
-   
-
 });

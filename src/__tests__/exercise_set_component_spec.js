@@ -37,9 +37,9 @@ it("ExerciseSet should update when input entered into #reps_completed-<id>", fun
     expect(exerciseSet.state.reps_completed).toBe("4");
 })
 
-// it("ExcerciseSet should have weight, rep_goal and reps_completed attributes", function () {
-// 	var testObject = getExerciseSetTestObject()
-// 	expect(testObject.props.weight).toBe(125);
-// 	expect(testObject.props.rep_goal).toBe(5);
-// 	expect(testObject.props.reps_completed).toBe(5);
-// });
+it("ExcerciseSet should have weight, rep_goal and reps_completed attributes", function () {
+	var testObject = getExerciseSetTestObject()
+	expect(testObject.props.weight).toBe(125);
+	expect(testObject.props.rep_goal).toBe(5);
+	expect(testObject.props.reps_completed).toBe(5);
+});

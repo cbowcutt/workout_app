@@ -1,4 +1,96 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+/*
+object-assign
+(c) Sindre Sorhus
+@license MIT
+*/
+
+'use strict';
+/* eslint-disable no-unused-vars */
+var getOwnPropertySymbols = Object.getOwnPropertySymbols;
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+var propIsEnumerable = Object.prototype.propertyIsEnumerable;
+
+function toObject(val) {
+	if (val === null || val === undefined) {
+		throw new TypeError('Object.assign cannot be called with null or undefined');
+	}
+
+	return Object(val);
+}
+
+function shouldUseNative() {
+	try {
+		if (!Object.assign) {
+			return false;
+		}
+
+		// Detect buggy property enumeration order in older V8 versions.
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=4118
+		var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
+		test1[5] = 'de';
+		if (Object.getOwnPropertyNames(test1)[0] === '5') {
+			return false;
+		}
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+		var test2 = {};
+		for (var i = 0; i < 10; i++) {
+			test2['_' + String.fromCharCode(i)] = i;
+		}
+		var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
+			return test2[n];
+		});
+		if (order2.join('') !== '0123456789') {
+			return false;
+		}
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+		var test3 = {};
+		'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
+			test3[letter] = letter;
+		});
+		if (Object.keys(Object.assign({}, test3)).join('') !==
+				'abcdefghijklmnopqrst') {
+			return false;
+		}
+
+		return true;
+	} catch (err) {
+		// We don't expect any of the above to throw, but better to be safe.
+		return false;
+	}
+}
+
+module.exports = shouldUseNative() ? Object.assign : function (target, source) {
+	var from;
+	var to = toObject(target);
+	var symbols;
+
+	for (var s = 1; s < arguments.length; s++) {
+		from = Object(arguments[s]);
+
+		for (var key in from) {
+			if (hasOwnProperty.call(from, key)) {
+				to[key] = from[key];
+			}
+		}
+
+		if (getOwnPropertySymbols) {
+			symbols = getOwnPropertySymbols(from);
+			for (var i = 0; i < symbols.length; i++) {
+				if (propIsEnumerable.call(from, symbols[i])) {
+					to[symbols[i]] = from[symbols[i]];
+				}
+			}
+		}
+	}
+
+	return to;
+};
+
+},{}],2:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -184,98 +276,6 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],2:[function(require,module,exports){
-/*
-object-assign
-(c) Sindre Sorhus
-@license MIT
-*/
-
-'use strict';
-/* eslint-disable no-unused-vars */
-var getOwnPropertySymbols = Object.getOwnPropertySymbols;
-var hasOwnProperty = Object.prototype.hasOwnProperty;
-var propIsEnumerable = Object.prototype.propertyIsEnumerable;
-
-function toObject(val) {
-	if (val === null || val === undefined) {
-		throw new TypeError('Object.assign cannot be called with null or undefined');
-	}
-
-	return Object(val);
-}
-
-function shouldUseNative() {
-	try {
-		if (!Object.assign) {
-			return false;
-		}
-
-		// Detect buggy property enumeration order in older V8 versions.
-
-		// https://bugs.chromium.org/p/v8/issues/detail?id=4118
-		var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
-		test1[5] = 'de';
-		if (Object.getOwnPropertyNames(test1)[0] === '5') {
-			return false;
-		}
-
-		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
-		var test2 = {};
-		for (var i = 0; i < 10; i++) {
-			test2['_' + String.fromCharCode(i)] = i;
-		}
-		var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
-			return test2[n];
-		});
-		if (order2.join('') !== '0123456789') {
-			return false;
-		}
-
-		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
-		var test3 = {};
-		'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
-			test3[letter] = letter;
-		});
-		if (Object.keys(Object.assign({}, test3)).join('') !==
-				'abcdefghijklmnopqrst') {
-			return false;
-		}
-
-		return true;
-	} catch (err) {
-		// We don't expect any of the above to throw, but better to be safe.
-		return false;
-	}
-}
-
-module.exports = shouldUseNative() ? Object.assign : function (target, source) {
-	var from;
-	var to = toObject(target);
-	var symbols;
-
-	for (var s = 1; s < arguments.length; s++) {
-		from = Object(arguments[s]);
-
-		for (var key in from) {
-			if (hasOwnProperty.call(from, key)) {
-				to[key] = from[key];
-			}
-		}
-
-		if (getOwnPropertySymbols) {
-			symbols = getOwnPropertySymbols(from);
-			for (var i = 0; i < symbols.length; i++) {
-				if (propIsEnumerable.call(from, symbols[i])) {
-					to[symbols[i]] = from[symbols[i]];
-				}
-			}
-		}
-	}
-
-	return to;
-};
-
 },{}],3:[function(require,module,exports){
 (function (process){
 /**
@@ -382,7 +382,7 @@ checkPropTypes.resetWarningCache = function() {
 module.exports = checkPropTypes;
 
 }).call(this,require('_process'))
-},{"./lib/ReactPropTypesSecret":4,"_process":1}],4:[function(require,module,exports){
+},{"./lib/ReactPropTypesSecret":4,"_process":2}],4:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -25615,7 +25615,7 @@ module.exports = reactDom;
 }
 
 }).call(this,require('_process'))
-},{"_process":1,"object-assign":2,"prop-types/checkPropTypes":3,"react":10,"scheduler":15,"scheduler/tracing":16}],6:[function(require,module,exports){
+},{"_process":2,"object-assign":1,"prop-types/checkPropTypes":3,"react":10,"scheduler":15,"scheduler/tracing":16}],6:[function(require,module,exports){
 /** @license React v16.9.0
  * react-dom.production.min.js
  *
@@ -25895,7 +25895,7 @@ function Lj(a,b){if(!Hj(a))throw t(Error(299),"unstable_createRoot");return new 
 (function(a){var b=a.findFiberByHostInstance;return tj(m({},a,{overrideHookState:null,overrideProps:null,setSuspenseHandler:null,scheduleUpdate:null,currentDispatcherRef:Xb.ReactCurrentDispatcher,findHostInstanceByFiber:function(a){a=qd(a);return null===a?null:a.stateNode},findFiberByHostInstance:function(a){return b?b(a):null},findHostInstancesForRefresh:null,scheduleRefresh:null,scheduleRoot:null,setRefreshHandler:null,getCurrentFiber:null}))})({findFiberByHostInstance:Ha,bundleType:0,version:"16.9.0",
 rendererPackageName:"react-dom"});var Oj={default:Nj},Pj=Oj&&Nj||Oj;module.exports=Pj.default||Pj;
 
-},{"object-assign":2,"react":10,"scheduler":15}],7:[function(require,module,exports){
+},{"object-assign":1,"react":10,"scheduler":15}],7:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -25937,7 +25937,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./cjs/react-dom.development.js":5,"./cjs/react-dom.production.min.js":6,"_process":1}],8:[function(require,module,exports){
+},{"./cjs/react-dom.development.js":5,"./cjs/react-dom.production.min.js":6,"_process":2}],8:[function(require,module,exports){
 (function (process){
 /** @license React v16.9.0
  * react.development.js
@@ -28176,7 +28176,7 @@ module.exports = react;
 }
 
 }).call(this,require('_process'))
-},{"_process":1,"object-assign":2,"prop-types/checkPropTypes":3}],9:[function(require,module,exports){
+},{"_process":2,"object-assign":1,"prop-types/checkPropTypes":3}],9:[function(require,module,exports){
 /** @license React v16.9.0
  * react.production.min.js
  *
@@ -28203,7 +28203,7 @@ b,d){return W().useImperativeHandle(a,b,d)},useDebugValue:function(){},useLayout
 h({},a.props),g=a.key,k=a.ref,f=a._owner;if(null!=b){void 0!==b.ref&&(k=b.ref,f=J.current);void 0!==b.key&&(g=""+b.key);var l=void 0;a.type&&a.type.defaultProps&&(l=a.type.defaultProps);for(c in b)K.call(b,c)&&!L.hasOwnProperty(c)&&(e[c]=void 0===b[c]&&void 0!==l?l[c]:b[c])}c=arguments.length-2;if(1===c)e.children=d;else if(1<c){l=Array(c);for(var m=0;m<c;m++)l[m]=arguments[m+2];e.children=l}return{$$typeof:p,type:a.type,key:g,ref:k,props:e,_owner:f}},createFactory:function(a){var b=M.bind(null,a);
 b.type=a;return b},isValidElement:N,version:"16.9.0",unstable_withSuspenseConfig:function(a,b){var d=I.suspense;I.suspense=void 0===b?null:b;try{a()}finally{I.suspense=d}},__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED:{ReactCurrentDispatcher:H,ReactCurrentBatchConfig:I,ReactCurrentOwner:J,IsSomeRendererActing:{current:!1},assign:h}},Y={default:X},Z=Y&&X||Y;module.exports=Z.default||Z;
 
-},{"object-assign":2}],10:[function(require,module,exports){
+},{"object-assign":1}],10:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -28214,7 +28214,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./cjs/react.development.js":8,"./cjs/react.production.min.js":9,"_process":1}],11:[function(require,module,exports){
+},{"./cjs/react.development.js":8,"./cjs/react.production.min.js":9,"_process":2}],11:[function(require,module,exports){
 (function (process){
 /** @license React v0.15.0
  * scheduler-tracing.development.js
@@ -28684,7 +28684,7 @@ exports.unstable_unsubscribe = unstable_unsubscribe;
 }
 
 }).call(this,require('_process'))
-},{"_process":1}],12:[function(require,module,exports){
+},{"_process":2}],12:[function(require,module,exports){
 /** @license React v0.15.0
  * scheduler-tracing.production.min.js
  *
@@ -29601,7 +29601,7 @@ exports.unstable_getFirstCallbackNode = unstable_getFirstCallbackNode;
 }
 
 }).call(this,require('_process'))
-},{"_process":1}],14:[function(require,module,exports){
+},{"_process":2}],14:[function(require,module,exports){
 /** @license React v0.15.0
  * scheduler.production.min.js
  *
@@ -29637,7 +29637,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./cjs/scheduler.development.js":13,"./cjs/scheduler.production.min.js":14,"_process":1}],16:[function(require,module,exports){
+},{"./cjs/scheduler.development.js":13,"./cjs/scheduler.production.min.js":14,"_process":2}],16:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -29648,19 +29648,16 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./cjs/scheduler-tracing.development.js":11,"./cjs/scheduler-tracing.production.min.js":12,"_process":1}],17:[function(require,module,exports){
+},{"./cjs/scheduler-tracing.development.js":11,"./cjs/scheduler-tracing.production.min.js":12,"_process":2}],17:[function(require,module,exports){
 var ReactDOM = require('react-dom');
 var components = require('./components.js');
 var WorkoutRoutine = components.WorkoutRoutine;
 var Exercise = components.Exercise;
 var ExerciseSet = components.ExerciseSet;
-var workout = new WorkoutRoutine();
-workout.addExercise(new Exercise({ exercise_name: "squat"}));
-// var workout = new components.WorkoutRoutine({ exercises: [
-//     new components.Exercise({exercise_name: "Squat", sets: [ new components.ExerciseSet({weight: 3, rep_goal: 5, reps_completed: 5})]}),
-//     new components.Exercise({exercise_name: "Deadlift", sets: [ new components.ExerciseSet({weight: 4, rep_goal: 5, reps_completed: 5})]}),
-//     new components.Exercise({exercise_name: "Bench Press", sets: [ new components.ExerciseSet({weight: 4, rep_goal: 5, reps_completed: 5})]})
-//   ]});
+var workout = new WorkoutRoutine({id: "myWorkout"});
+workout.addExercise(new Exercise({ id: "exercise-squat",exercise_name: "squat"}));
+workout.state.exercises[0].addSet(new components.ExerciseSet({ id: "set", weight: 3, rep_goal: 5, reps_completed: 5 }));
+
   var container = document.getElementById('workout-container')
   ReactDOM.render(workout.render(), container);
   
@@ -29673,16 +29670,25 @@ var React = require('react');
 class ExerciseSet extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { Completed: false };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.state = { reps_completed: this.props.reps_completed };
+  }
+
+  handleChange(e) {
+    var newState = { reps_completed: e.target.value};
+    console.log(newState);
+    this.state = newState;
   }
 
   render() {
-    var React = require('react');
     return React.createElement(
-      'tr', null, [
-        React.createElement('td', null, this.props.weight),
-        React.createElement('td', null, this.props.rep_goal),
-        React.createElement('td', null, this.props.reps_completed)
+      'tr', { key: 'tr-' + this.props.id}, [
+        React.createElement('td', { key: 'weight-' + this.props.id}, this.props.weight),
+        React.createElement('td', { key: 'rep_goal-' + this.props.id}, this.props.rep_goal),
+        React.createElement('td', { id: "reps_completed-" + this.props.id, key: 'reps_completed-' + this.props.id},
+          React.createElement('input',{ onChange: this.handleChange, value: this.state.reps_completed})
+        )
       ]
 
     );
@@ -29695,41 +29701,31 @@ class Exercise extends React.Component {
       this.state = { Completed: false, sets: []}
     }
 
-    componentDidMount() {
-      this.setState({ Completed: false, sets: []});
-    }
     addSet(set) {
       var newSet = this.state.sets;
-      this.setState(() => {
-        
-        if (newSet == undefined) {
-          newSet = [];
-        }
-        newSet.push(set);
-        return { sets: newSet};
-      });
+      newSet.push(set);
+      this.setState(state => ({ Completed: false, sets: newSet}));
     }
 
     render() {
-      var React = require('react');
-      return React.createElement('div', {className: 'ui styled accordion'}, [
-        React.createElement('div', {className:"active title"}, [
-          React.createElement('i', {className: "dropdown icon"}),
-          this.props.exercise_name
+      return React.createElement('div', {className: 'ui styled accordion' , key: "container-" + this.props.id}, 
+        React.createElement('div', {className:"active title", key: 'title-' + this.props.id }, [
+          React.createElement('i', {className: "dropdown icon", key: 'icon-' + this.props.id}),
+            React.createElement('p', {  key: 'name-' + this.props.id}, this.props.exercise_name)
         ]),
         React.createElement('div', {className: "active content"},
           React.createElement('table', {className: "ui celled table"},
             React.createElement('thead', null, 
               React.createElement('tr', null, [
-                React.createElement('th', null, 'Weight'),
-                React.createElement('th', null, 'Rep Goal'),
-                React.createElement('th', null, 'Reps Completed')
+                React.createElement('th', {key: this.props.id + "-weight"}, 'Weight'),
+                React.createElement('th', {key: this.props.id + "-goal"}, 'Rep Goal'),
+                React.createElement('th', {key: this.props.id + "-completed"}, 'Reps Completed')
               ]
             )),
             React.createElement('tbody', null, this.state.sets.map(s => s.render()))
         )
       )
-    ]);
+    );
   }
 }
 
@@ -29738,21 +29734,36 @@ class WorkoutRoutine extends React.Component {
   constructor(props) {
     super(props);
     this.state = { exercises: [] }
+    this.onChange = this.handleChange.bind(this);
   }
 
   addExercise(exercise)
   {
     var newExercises = this.state.exercises;
     newExercises.push(exercise);
-    this.setState({ exercises: newExercises})
+    this.state = { exercises: newExercises};
+    
+  }
 
+  exerciseAdded(event) {
+    console.log(event);
+  }
+
+  handleChange(event) {
+    if (this.presenter == undefined) {
+      return new Error("presenter not defined");
+    }
+    this.presenter.inputReceived(event);
+  }
+
+  subscribeToPresenter(presenter)  {
+    this.presenter = presenter;
   }
   componentDidMount() {
-    this.setState({ exercises: [] });
   }
 
   render() {
-    return React.createElement('div', { className: "ui list", id: "workout-exercises-list"}, this.state.exercises.map(exercise => exercise.render()) )
+    return React.createElement('div', { className: "ui list", id: this.props.id, onChange: this.handleChange.bind(this)}, this.state.exercises.map(exercise => exercise.render()) )
   } 
 }
 
@@ -29766,6 +29777,18 @@ class AddSetButton extends React.Component
 {
   render() {
     return React.createElement('div', { className: "ui button "});
+  }
+}
+
+class ExerciseSetForm extends React.Component
+{
+  render() {
+    return React.createElement('form', { onSubmit: () => {} }, [
+      React.createElement('label', null, [
+        "Weight",
+        React.createElement("input", {type: "text"})
+      ])
+    ]);
   }
 }
 

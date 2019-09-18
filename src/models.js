@@ -2,13 +2,13 @@
 class Model {
 	constructor(_data)
 	{
-		if (_data.id == undefined) {
-			throw new Error("_data.id must not be undefined");
+		if (_data == undefined) {
+			_data = { id: AssignNewID() };
+		}
+		else if (_data.id == undefined) {
+			_data.id = { id: AssignNewID() };
 		}
 		this.data = _data;
-		// this.ModelChanged = new Event("ModelChanged", {
-			// data: this.data
-		// })
 	}
 	
 	
@@ -31,6 +31,12 @@ class ExerciseModel extends Model {
 		super(data);
 	}
 
+}
+
+var id = 0;
+
+function AssignNewID() {
+	return id++;
 }
 
 module.exports = {};

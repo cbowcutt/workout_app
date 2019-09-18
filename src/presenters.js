@@ -35,7 +35,7 @@ class Presenter {
 	}
 }
 
-class WorkoutPresenter extends Presenter {
+class WorkoutRoutinePresenter extends Presenter {
 	constructor() { 
 		super()
 	}
@@ -50,4 +50,4 @@ class WorkoutPresenter extends Presenter {
 
 module.exports = {};
 module.exports.Presenter = Presenter;
-module.exports.WorkoutPresenter = WorkoutPresenter;
+module.exports.WorkoutRoutinePresenter = WorkoutRoutinePresenter;

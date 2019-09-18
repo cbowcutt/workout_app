@@ -38,11 +38,14 @@ it("Exercise should update when input entered into #reps_completed-<id>", functi
 
     act(() => {
         render(testObject.render(), container)   
+        
+    }, () => {
         const input = container.querySelector("tr > td > input");
         input.value = 4;
         Simulate.change(input);
+        expect(testObject.state.reps_completed).toBe("4");
     })
-    expect(testObject.state.reps_completed).toBe("4");
+    
     
     
 	

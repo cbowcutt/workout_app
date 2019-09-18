@@ -9,7 +9,7 @@ class ExerciseSet extends React.Component {
   onChange(e) {
     console.log(e.target);
     var reps = e.target.value;
-    this.state = { Completed: false, reps_completed: e.target.value}
+    this.setState(state => ({ Completed: false, reps_completed: e.target.value}))
   }
 
   render() {

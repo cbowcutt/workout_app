@@ -4,16 +4,22 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jasmine src/*spec.js"
+    "test": "jest src/*spec.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "browserify": "^16.5.0",
-    "jasmine": "^3.4.0",
-    "react-dom": "^16.9.0"
+    "browserify": "*",
+    "jasmine": "*",
+    "jest": "*",
+    "react-dom": "*",
+    "@babel/preset-env": "*",
+    "@babel/preset-react": "*",
+    "babel-jest": "*",
+    "react-test-renderer": "*"
   },
   "dependencies": {
+    "babel-jest": "^24.9.0",
     "react": "^16.9.0"
   }
 }

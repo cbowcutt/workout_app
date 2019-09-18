@@ -1,10 +1,75 @@
 const fs = require('fs');
 // React = require('react');
 // ReactDOM = require('react-dom');
-var app = require("./components.js");
-var models = require("./models.js");
-var presenters = require("./presenters.js");
-//import ExerciseSet from './public/js/workout_app.js';
+import * as app from '../components.js';
+import * as models from '../components.js';
+import * as presenters from '../presenters.js';
+
+import React from "react";
+import { render, unmountComponentAtNode } from "react-dom";
+import { act } from "react-dom/test-utils";
+
+let container = null;
+beforeEach(() => {
+  // setup a DOM element as a render target
+  container = document.createElement("div");
+  document.body.appendChild(container);
+});
+
+afterEach(() => {
+  // cleanup on exiting
+  unmountComponentAtNode(container);
+  container.remove();
+  container = null;
+});
+
+// function getExerciseTestObject() {
+// 	return new app.Exercise({ exercise_name: "squat" });
+// }
+// it("Exercise should render()", function () {
+// 	var exercise = getExerciseTestObject();
+// 	var rendered = exercise.render();
+// 	expect(rendered).toBeDefined();
+// })
+// it("Exercise should be able to have ExcerciseSets added to it", function () {
+// 	var exercise = getExerciseTestObject();
+// 	act(() => {
+// 		render(exercise, container)
+// 		expect(exercise.state.sets).toEqual([]);
+// 		exercise.addSet(new app.ExerciseSet({ weight: 125, rep_goal: 2, reps_completed: 5}));
+// 		expect(exercise.state.sets.length).toBe(1);
+// 		exercise.addSet(new app.ExerciseSet({ weight: 125, rep_goal: 2, reps_completed: 5}));
+// 		expect(exercise.state.sets.length).toBe(2);
+// 	})
+	
+	
+// });
+// it("Exercise should have a name", function () {
+// 	expect(getExerciseTestObject().props.exercise_name).toBe("squat");
+// })
+
+function getExerciseSetTestObject() {
+	return new app.ExerciseSet({weight: 125, rep_goal: 5, reps_completed: 5 })
+}
+it("ExcerciseSet should have weight, rep_goal and reps_completed attributes", function () {
+	var exerciseSet = getExerciseSetTestObject()
+	expect(exerciseSet.props.weight).toBe(125);
+	expect(exerciseSet.props.rep_goal).toBe(5);
+	expect(exerciseSet.props.reps_completed).toBe(5);
+});
+it("ExcerciseSet should render", function () {
+	var exerciseSet = getExerciseSetTestObject();
+	expect(exerciseSet.render()).toBeDefined();
+});
+
+it("Exercise should have a name", function () {
+	let testObject = getExerciseTestObject();
+	act(() => {
+		render(testObject, container)
+	})
+	expect(testObject.props.exercise_name).toBe("squat");
+})
+
 
 describe("workout_app", function() {
 
@@ -13,9 +78,12 @@ describe("workout_app", function() {
 			return new app.Exercise({ exercise_name: "squat" });
 		}
 		it("should render()", function () {
-			var exercise = getExerciseTestObject();
-			var rendered = exercise.render();
-			expect(rendered).toBeDefined();
+			act(() => {
+				var exercise = getExerciseTestObject();
+				render(exercise, container);
+				expect(container).toBeDefined();
+			})
+
 		})
 		it("should be able to have ExcerciseSets added to it", function () {
 			var exercise = getExerciseTestObject();
@@ -25,25 +93,9 @@ describe("workout_app", function() {
 			// exercise.addSet(new app.ExerciseSet({ weight: 125, rep_goal: 2, reps_completed: 5}));
 			// expect(exercise.state.sets.length).toBe(2);
 		});
-		it("should have a name", function () {
-			expect(getExerciseTestObject().props.exercise_name).toBe("squat");
-		})
+
 	})
-	describe("ExcerciseSet", function () {
-		function getExerciseSetTestObject() {
-			return new app.ExerciseSet({weight: 125, rep_goal: 5, reps_completed: 5 })
-		}
-		it("should have weight, rep_goal and reps_completed attributes", function () {
-			var exerciseSet = getExerciseSetTestObject()
-			expect(exerciseSet.props.weight).toBe(125);
-			expect(exerciseSet.props.rep_goal).toBe(5);
-			expect(exerciseSet.props.reps_completed).toBe(5);
-		});
-		it("should render", function () {
-			var exerciseSet = getExerciseSetTestObject();
-			expect(exerciseSet.render()).toBeDefined();
-		});
-	})
+
 
 	describe("WorkoutRoutine", function () {
 		function getWorkoutRoutineTestObject() {
@@ -51,7 +103,10 @@ describe("workout_app", function() {
 		}
 		it("should render without any exercises", function () {
 			var routine = getWorkoutRoutineTestObject();
-			expect(routine.render()).toBeDefined();
+			act(() => {
+				render(routine, container);
+			})
+			expect(routine).toBeDefined();
 		});
 
 		it("should be able to have exercises added", function () {
@@ -68,20 +123,20 @@ describe("workout_app", function() {
 		}
 	})
 
-	describe("ExerciseSetForm", function () {
-		function getAddExerciseButtonTestObject() {
-			return new app.ExerciseSetForm();
-		}
-		it("should have input for weight", function () {
-			fail("not yet implemented")
-		})
-		it("should have input for reps", function () {
-			fail("not yet implemented")
-		})
-		it("should be used to create a new Exercise Set", () => {
-			fail("not yet implemented")
-		})
-	})
+	// describe("ExerciseSetForm", function () {
+	// 	function getAddExerciseButtonTestObject() {
+	// 		return new app.ExerciseSetForm();
+	// 	}
+	// 	it("should have input for weight", function () {
+	// 		fail("not yet implemented")
+	// 	})
+	// 	it("should have input for reps", function () {
+	// 		fail("not yet implemented")
+	// 	})
+	// 	it("should be used to create a new Exercise Set", () => {
+	// 		fail("not yet implemented")
+	// 	})
+	// })
 	
 	// describe("Model", function () {
 		// function getModelTestObject() {

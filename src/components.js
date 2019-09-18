@@ -35,7 +35,7 @@ class Exercise extends React.Component {
     addSet(set) {
       var newSet = this.state.sets;
       newSet.push(set);
-      this.setState((({ sets: newSet})));
+      this.setState(state => ({ Completed: false, sets: newSet}));
     }
 
     render() {

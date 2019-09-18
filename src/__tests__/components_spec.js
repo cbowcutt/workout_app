@@ -48,55 +48,10 @@ afterEach(() => {
 // 	expect(getExerciseTestObject().props.exercise_name).toBe("squat");
 // })
 
-function getExerciseSetTestObject() {
-	return new app.ExerciseSet({weight: 125, rep_goal: 5, reps_completed: 5 })
-}
-it("ExcerciseSet should have weight, rep_goal and reps_completed attributes", function () {
-	var exerciseSet = getExerciseSetTestObject()
-	expect(exerciseSet.props.weight).toBe(125);
-	expect(exerciseSet.props.rep_goal).toBe(5);
-	expect(exerciseSet.props.reps_completed).toBe(5);
-});
-it("ExcerciseSet should render", function () {
-	var exerciseSet = getExerciseSetTestObject();
-	expect(exerciseSet.render()).toBeDefined();
-});
 
-it("Exercise should have a name", function () {
-	let testObject = getExerciseTestObject();
-	act(() => {
-		render(testObject, container)
-	})
-	expect(testObject.props.exercise_name).toBe("squat");
-})
 
 
 describe("workout_app", function() {
-
-	describe("Excercise", function () {
-		function getExerciseTestObject() {
-			return new app.Exercise({ exercise_name: "squat" });
-		}
-		it("should render()", function () {
-			act(() => {
-				var exercise = getExerciseTestObject();
-				render(exercise, container);
-				expect(container).toBeDefined();
-			})
-
-		})
-		it("should be able to have ExcerciseSets added to it", function () {
-			var exercise = getExerciseTestObject();
-			expect(exercise.state.sets).toEqual([]);
-			// exercise.addSet(new app.ExerciseSet({ weight: 125, rep_goal: 2, reps_completed: 5}));
-			// expect(exercise.state.sets.length).toBe(1);
-			// exercise.addSet(new app.ExerciseSet({ weight: 125, rep_goal: 2, reps_completed: 5}));
-			// expect(exercise.state.sets.length).toBe(2);
-		});
-
-	})
-
-
 	describe("WorkoutRoutine", function () {
 		function getWorkoutRoutineTestObject() {
 			return new app.WorkoutRoutine()
@@ -122,22 +77,6 @@ describe("workout_app", function() {
 			
 		}
 	})
-
-	// describe("ExerciseSetForm", function () {
-	// 	function getAddExerciseButtonTestObject() {
-	// 		return new app.ExerciseSetForm();
-	// 	}
-	// 	it("should have input for weight", function () {
-	// 		fail("not yet implemented")
-	// 	})
-	// 	it("should have input for reps", function () {
-	// 		fail("not yet implemented")
-	// 	})
-	// 	it("should be used to create a new Exercise Set", () => {
-	// 		fail("not yet implemented")
-	// 	})
-	// })
-	
 	// describe("Model", function () {
 		// function getModelTestObject() {
 			// return new models.Model({ id: 0, exercises: []})

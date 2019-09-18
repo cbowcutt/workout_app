@@ -32,11 +32,12 @@ it("Exercise should be able to have ExcerciseSets added to it", function () {
     act(() => {
         var rendered =  exercise.render()
         render(rendered, container);
+    }, () => {
+        exercise.addSet(new ExerciseSet({ weight: 125, rep_goal: 2, reps_completed: 5}));
+        expect(exercise.state.sets.length).toBe(1);
+        exercise.addSet(new ExerciseSet({ weight: 125, rep_goal: 2, reps_completed: 5}));
+        expect(exercise.state.sets.length).toBe(2)
     })
-    act(() => {exercise.addSet(new ExerciseSet({ weight: 125, rep_goal: 2, reps_completed: 5})); });
-    expect(exercise.state.sets.length).toBe(1);
-    act(() => {exercise.addSet(new ExerciseSet({ weight: 125, rep_goal: 2, reps_completed: 5})); });;
-    expect(exercise.state.sets.length).toBe(2);
 });
 
 it("Exercise should have a name", function () {

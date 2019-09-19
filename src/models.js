@@ -93,6 +93,11 @@ class ExerciseSetModel extends Model {
 		this.presenter = new ExerciseSetPresenter();
 		this.presenter.subscribeToModel(this);
 	}
+
+	modifyRepsCompleted(val) {
+		this.data.reps_completed = val;
+		this.presenter.repsModified();
+	}
 }
 
 var id = 0;

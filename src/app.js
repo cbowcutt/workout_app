@@ -6,7 +6,7 @@ var WorkoutRoutine = components.WorkoutRoutine;
 var Exercise = components.Exercise;
 var ExerciseSet = components.ExerciseSet;
 
-var workoutModel = new models.WorkoutRoutineModel({id: "myWorkout"});
+window.workoutModel = new models.WorkoutRoutineModel({id: "myWorkout"});
 workoutModel.addExercise({ id: "exercise-squat",exercise_name: "squat"});
 workoutModel.data.exercises[0].addExerciseSet({ weight: 120, rep_goal: 10 })
  

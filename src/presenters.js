@@ -92,6 +92,21 @@ class ExerciseSetPresenter extends Presenter{
 		var propData = { id: data.id, rep_goal: data.rep_goal, weight: data.weight };
 		return new components.ExerciseSet(propData);
 	}
+
+	inputReceived(e) {
+		e.preventDefault();
+		this.model.modifyRepsCompleted(e.target.value);
+	}
+
+	repsModified() {
+		this.view.state.reps_completed = this.model.data.reps_completed;
+	}
+}
+
+class AppPresenter extends Presenter {
+	createView(data) {
+		return new components.App(data);
+	}
 }
 
 module.exports = {};

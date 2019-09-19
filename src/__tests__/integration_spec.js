@@ -46,12 +46,12 @@ it("ExerciseModel should create a Exercise component when constructed", function
   expect(testObject.presenter.view.state).toEqual({ Completed: false, sets: [] });
 })
 
-it("ExercisSetModel should create a ExerciseSetPresenter when constructed", function () {
+it("ExerciseSetModel should create a ExerciseSetPresenter when constructed", function () {
   var testObject = getExerciseSetModelTestObject();
   expect(testObject.presenter).toBeDefined();
 })
 
-it("ExercisSetModel should create a ExerciseSet component when constructed", function () {
+it("ExerciseSetModel should create a ExerciseSet component when constructed", function () {
   var testObject = getExerciseSetModelTestObject();
   expect(testObject.presenter.view).toBeDefined();
   expect(testObject.presenter.view.state).toEqual({ reps_completed: 0});
@@ -88,3 +88,17 @@ it("WorkoutRoutinePresenter should be notified when its WorkoutRoutine component
 
     expect(model.data.exercises[0].data.exercise_name).toBe("ex");
 });
+
+it("ExerciseSetModel should update when input entered into the associated compoent view", function () {
+  var exerciseSetModel = getExerciseSetModelTestObject();
+	act(() => {
+		render(exerciseSetModel.presenter.view.render(), container);
+  })
+  console.log(container);
+    const input = container.querySelector("tr > td > input");
+    input.value = 4
+    Simulate.change(input);
+    
+    expect(exerciseSetModel.data.reps_completed).toBe("4");
+    expect(exerciseSetModel.presenter.view.state.reps_completed).toBe("4");
+})

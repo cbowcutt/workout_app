@@ -3,17 +3,22 @@ class ExerciseSet extends React.Component {
   constructor(props) {
     super(props);
 
-    this.handleChange = this.handleChange.bind(this);
+    this.onChange = this.handleChange.bind(this);
     this.state = { reps_completed: 0 };
   }
 
   componentDidMount() {
+    console.log("YOO");
+    //this.setState({ reps_completed: 0});
   }
 
   handleChange(e) {
     var newState = { reps_completed: e.target.value};
     console.log(newState);
-    this.setState({ reps_completed: e.target.value});
+    this.state = { reps_completed: e.target.value };
+
+    this.render();
+    e.preventDefault();
   }
 
   subscribeToPresenter(presenter)  {
@@ -26,7 +31,10 @@ class ExerciseSet extends React.Component {
         React.createElement('td', { key: 'weight-' + this.props.id}, this.props.weight),
         React.createElement('td', { key: 'rep_goal-' + this.props.id}, this.props.rep_goal),
         React.createElement('td', { id: "reps_completed-" + this.props.id, key: 'reps_completed-' + this.props.id},
-          React.createElement('input',{ onChange: this.handleChange, value: this.state.reps_completed})
+          React.createElement('div', {className: 'ui input'},
+            React.createElement('input',{  onChange: (e) => { this.presenter.inputReceived(e) }})
+          )
+          
         )
       ]
 
@@ -38,6 +46,8 @@ class Exercise extends React.Component {
     constructor(props) {
       super(props);
       this.state = { Completed: false, sets: []}
+    }  
+    componentDidMount() {
     }
 
     addSet(set) {
@@ -65,7 +75,9 @@ class Exercise extends React.Component {
                 React.createElement('th', {key: this.props.id + "-completed"}, 'Reps Completed')
               ]
             )),
-            React.createElement('tbody', null, this.state.sets.map(s => s.render()))
+            React.createElement('tbody', null, this.state.sets.map(s => { 
+              return s.render()
+            }))
         )
       )
     );
@@ -86,6 +98,8 @@ class WorkoutRoutine extends React.Component {
     newExercises.push(exercise);
     this.state = { exercises: newExercises};
     
+  }
+  componentDidMount() {
   }
 
   exerciseAdded(event) {

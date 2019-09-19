@@ -25,17 +25,6 @@ afterEach(() => {
   container = null;
 });
 
-it("ExerciseSet should update when input entered into #reps_completed-<id>", function () {
-	var exerciseSet = getExerciseSetTestObject();
-	act(() => {
-		render(exerciseSet.render(), container);
-	})
-    const input = container.querySelector("tr > td > input");
-    input.value = 4
-    Simulate.change(input);
-    
-    expect(exerciseSet.state.reps_completed).toBe("4");
-})
 
 it("ExcerciseSet should have weight, rep_goal and reps_completed attributes", function () {
 	var testObject = getExerciseSetTestObject()

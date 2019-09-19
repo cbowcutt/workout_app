@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest ./src/__tests__/.*spec.*",
     "bundle": "browserify ./src/app.js -o ./public/js/app.js",
-    "serve": "npx serve"
+    "serve": "serve"
   },
   "author": "",
   "license": "ISC",
@@ -17,7 +17,7 @@
     "browserify": "*",
     "jasmine": "*",
     "jest": "^25.0.0",
-    "npx": "*",
+    "serve": "*",
     "react-dom": "*",
     "react-test-renderer": "*"
   },

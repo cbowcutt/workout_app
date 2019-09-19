@@ -1,5 +1,5 @@
 import { Exercise, ExerciseSet, WorkoutRoutine } from '../components.js';
-import { ExerciseModel, WorkoutRoutineModel } from '../models.js';
+import { ExerciseModel, WorkoutRoutineModel, ExerciseSetModel } from '../models.js';
 import { WorkoutRoutinePresenter} from '../presenters.js';
 
 module.exports = {}
@@ -9,6 +9,10 @@ function getExerciseTestObject() {
 
 function getExerciseSetTestObject() {
 	return new ExerciseSet({ id: 10, weight: 125, rep_goal: 5, reps_completed: 5 })
+}
+
+function getExerciseSetModelTestObject() {
+	return new ExerciseSetModel({ id: 10, weight: 125, rep_goal: 5, reps_completed: 5 })
 }
 
 function getWorkoutRoutinePresenterTestObject() {
@@ -31,5 +35,6 @@ module.exports.getExerciseTestObject = getExerciseTestObject;
 module.exports.getExerciseSetTestObject = getExerciseSetTestObject;
 module.exports.getWorkoutRoutinePresenterTestObject = getWorkoutRoutinePresenterTestObject;
 module.exports.getExerciseModelTestObject = getExerciseModelTestObject;
+module.exports.getExerciseSetModelTestObject = getExerciseSetModelTestObject;
 module.exports.getWorkoutRoutineTestObject = getWorkoutRoutineTestObject;
 module.exports.getWorkoutRoutineModelTestObject = getWorkoutRoutineModelTestObject;

@@ -4,13 +4,17 @@ class ExerciseSet extends React.Component {
     super(props);
 
     this.handleChange = this.handleChange.bind(this);
-    this.state = { reps_completed: this.props.reps_completed };
+    this.state = { reps_completed: 0 };
   }
 
   handleChange(e) {
     var newState = { reps_completed: e.target.value};
     console.log(newState);
     this.state = newState;
+  }
+
+  subscribeToPresenter(presenter)  {
+    this.presenter = presenter;
   }
 
   render() {
@@ -37,6 +41,10 @@ class Exercise extends React.Component {
       var newSet = this.state.sets;
       newSet.push(set);
       this.setState(state => ({ Completed: false, sets: newSet}));
+    }
+
+    subscribeToPresenter(presenter)  {
+      this.presenter = presenter;
     }
 
     render() {

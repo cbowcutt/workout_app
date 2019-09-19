@@ -13,41 +13,32 @@ class Presenter {
 	}
 	
 	
-	AssignStateChangeCallback(callback) {
-		this.OnModelChanged = callback;
+	subscribeToModel(_model) {
+		this.model = _model;
+		this.model.subscribeToPresenter(this);
+		if (this.view == undefined) {
+			this.view = this.createView(_model.data);
+			this.view.subscribeToPresenter(this);
+			this.subscribeToComponent(this.view);
+		}
 	}
-	
-	StateChanged(data) {
-		this.OnStateChanged(data);
-	}
-	
-	SubscribeToModel(model, component)
-	{
-		this.mapModelIDToCompoent(model.data.id, component);
-	}
-	
 
-	
-	
-	mapModelIDToComponent(id, component)
-	{
-		this.components[id] = component;
+	createView() {
+		throw new Error("need to implement createView();");
+	}
+
+	subscribeToComponent(component) {
+		this.view = component;
 	}
 }
 
 class WorkoutRoutinePresenter extends Presenter {
 	constructor() { 
 		super()
-		this.change = false;
 	}
 	
-	SubscribeToModel(workoutRoutineModel) {
-		this.model = workoutRoutineModel;
-		if (this.view == undefined) {
-			this.view = new components.WorkoutRoutine(workoutRoutineModel.data);
-			this.view.subscribeToPresenter(this);
-			this.subscribeToComponent(this.view);
-		}
+	createView(data) {
+		return new components.WorkoutRoutine(data);
 	}
 
 	subscribeToComponent(component) {
@@ -65,11 +56,42 @@ class WorkoutRoutinePresenter extends Presenter {
 		this.model.addExercise(newExerciseData)
 	}
 
+	modelExerciseAdded() {
+
+	}
+
+	modelStateChanged() {
+		this.view.state = { exercises: this.model.data.exercises.map((exercise) => exercise.presenter.view) };
+	}
+
+
+
+	updateUI() {
+		if (this.view == undefined) {
+			throw new Error("presenter not subscribed to view component");
+		}
+	}
+
 	inputReceived(event) {
 		this.exerciseAdded(event);
+	}
+}
+
+class ExercisePresenter extends Presenter {
+	createView(data) {
+		return new components.Exercise(data);
+	}
+}
+
+class ExerciseSetPresenter extends Presenter{
+	createView(data) {
+		var propData = { id: data.id, rep_goal: data.rep_goal, weight: data.weight };
+		return new components.ExerciseSet(propData);
 	}
 }
 
 module.exports = {};
 module.exports.Presenter = Presenter;
 module.exports.WorkoutRoutinePresenter = WorkoutRoutinePresenter;
+module.exports.ExercisePresenter = ExercisePresenter;
+module.exports.ExerciseSetPresenter = ExerciseSetPresenter;

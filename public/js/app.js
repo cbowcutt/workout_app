@@ -29658,9 +29658,8 @@ var Exercise = components.Exercise;
 var ExerciseSet = components.ExerciseSet;
 
 var workoutModel = new models.WorkoutRoutineModel({id: "myWorkout"});
-var workoutRoutinePresenter = new presenters.WorkoutRoutinePresenter();
-workoutRoutinePresenter.SubscribeToModel(workoutModel);
 workoutModel.addExercise({ id: "exercise-squat",exercise_name: "squat"});
+workoutModel.data.exercises[0].addExerciseSet({ weight: 120, rep_goal: 10 })
  
 
 // var workout = new WorkoutRoutine({id: "myWorkout"});
@@ -29668,7 +29667,7 @@ workoutModel.addExercise({ id: "exercise-squat",exercise_name: "squat"});
 // workout.state.exercises[0].addSet(new components.ExerciseSet({ id: "set", weight: 3, rep_goal: 5, reps_completed: 5 }));
 
   var container = document.getElementById('workout-container')
-  ReactDOM.render(workoutRoutinePresenter.view.render(), container);
+  ReactDOM.render(workoutModel.presenter.view.render(), container);
   
   $('.ui.accordion').accordion();
   $('#exercise-progress').progress({ percent: 55});
@@ -29679,13 +29678,17 @@ class ExerciseSet extends React.Component {
     super(props);
 
     this.handleChange = this.handleChange.bind(this);
-    this.state = { reps_completed: this.props.reps_completed };
+    this.state = { reps_completed: 0 };
   }
 
   handleChange(e) {
     var newState = { reps_completed: e.target.value};
     console.log(newState);
-    this.state = newState;
+    this.setState({ reps_completed: e.target.value});
+  }
+
+  subscribeToPresenter(presenter)  {
+    this.presenter = presenter;
   }
 
   render() {
@@ -29712,6 +29715,10 @@ class Exercise extends React.Component {
       var newSet = this.state.sets;
       newSet.push(set);
       this.setState(state => ({ Completed: false, sets: newSet}));
+    }
+
+    subscribeToPresenter(presenter)  {
+      this.presenter = presenter;
     }
 
     render() {
@@ -29810,6 +29817,11 @@ module.exports.AddExerciseButton = AddExerciseButton;
 
 
 },{"react":10}],19:[function(require,module,exports){
+var presenters = require("./presenters");
+
+var WorkoutRoutinePresenter = presenters.WorkoutRoutinePresenter;
+var ExercisePresenter = presenters.ExercisePresenter;
+var ExerciseSetPresenter = presenters.ExerciseSetPresenter;
 
 class Model {
 	constructor(_data)
@@ -29821,6 +29833,10 @@ class Model {
 			_data.id = { id: AssignNewID() };
 		}
 		this.data = _data;
+	}
+
+	subscribeToPresenter(presenter) {
+		this.presenter = presenter;
 	}
 	
 	
@@ -29837,6 +29853,8 @@ class WorkoutRoutineModel extends Model {
 		if (this.data.exercises == undefined) {
 			this.data.exercises = [];
 		}
+		this.presenter = new WorkoutRoutinePresenter();
+		this.presenter.subscribeToModel(this);
 	}
 
 	addExercise(newExerciseData) {
@@ -29851,9 +29869,7 @@ class WorkoutRoutineModel extends Model {
 		this.presenter.modelStateChanged();
 	}
 
-	subscribeToPresenter(presenter) {
-		this.presenter = presenter;
-	}
+
 }
 
 class ExerciseModel extends Model {
@@ -29863,11 +29879,17 @@ class ExerciseModel extends Model {
 		{
 			throw new Error("data.exercise_name must not be undefined");
 		}
+		if (this.data.sets == undefined) {
+			this.data.sets = [];
+		}
+		this.presenter = new ExercisePresenter();
+		this.presenter.subscribeToModel(this);
 	}
 
 	addExerciseSet(exerciseSetData) {
 		ValidateExerciseSetData(exerciseSetData);
 		this.data.sets.push(new ExerciseSetModel(exerciseSetData));
+		this.presenter.setAdded();
 	}
 }
 
@@ -29878,15 +29900,17 @@ function ValidateExerciseSetData(data) {
 	if (data.rep_goal == undefined) {
 		throw new Error("rep_goal is undefined")
 	}
-	if (data.reps_completed == undefined) {
-		throw new Error("reps_completed is undefined")
-	}
+	// if (data.reps_completed == undefined) {
+	// 	throw new Error("reps_completed is undefined")
+	// }
 }
 
 class ExerciseSetModel extends Model {
 	constructor(data) {
 		super(data);
 		ValidateExerciseSetData(data);
+		this.presenter = new ExerciseSetPresenter();
+		this.presenter.subscribeToModel(this);
 	}
 }
 
@@ -29900,7 +29924,8 @@ module.exports = {};
 module.exports.Model = Model;
 module.exports.WorkoutRoutineModel = WorkoutRoutineModel;
 module.exports.ExerciseModel = ExerciseModel;
-},{}],20:[function(require,module,exports){
+module.exports.ExerciseSetModel = ExerciseSetModel;
+},{"./presenters":20}],20:[function(require,module,exports){
 var components = require('./components.js');
 class Presenter {
 	
@@ -29916,42 +29941,32 @@ class Presenter {
 	}
 	
 	
-	AssignStateChangeCallback(callback) {
-		this.OnModelChanged = callback;
+	subscribeToModel(_model) {
+		this.model = _model;
+		this.model.subscribeToPresenter(this);
+		if (this.view == undefined) {
+			this.view = this.createView(_model.data);
+			this.view.subscribeToPresenter(this);
+			this.subscribeToComponent(this.view);
+		}
 	}
-	
-	StateChanged(data) {
-		this.OnStateChanged(data);
-	}
-	
-	SubscribeToModel(model, component)
-	{
-		this.mapModelIDToCompoent(model.data.id, component);
-	}
-	
 
-	
-	
-	mapModelIDToComponent(id, component)
-	{
-		this.components[id] = component;
+	createView() {
+		throw new Error("need to implement createView();");
+	}
+
+	subscribeToComponent(component) {
+		this.view = component;
 	}
 }
 
 class WorkoutRoutinePresenter extends Presenter {
 	constructor() { 
 		super()
-		this.change = false;
 	}
 	
-	SubscribeToModel(workoutRoutineModel) {
-		this.model = workoutRoutineModel;
-		this.model.subscribeToPresenter(this);
-		if (this.view == undefined) {
-			this.view = new components.WorkoutRoutine(workoutRoutineModel.data);
-			this.view.subscribeToPresenter(this);
-			this.subscribeToComponent(this.view);
-		}
+	createView(data) {
+		return new components.WorkoutRoutine(data);
 	}
 
 	subscribeToComponent(component) {
@@ -29969,9 +29984,15 @@ class WorkoutRoutinePresenter extends Presenter {
 		this.model.addExercise(newExerciseData)
 	}
 
-	modelStateChanged() {
-		this.view.state = { exercises: this.model.data.exercises.map((exercise) => exercise.data) };
+	modelExerciseAdded() {
+
 	}
+
+	modelStateChanged() {
+		this.view.state = { exercises: this.model.data.exercises.map((exercise) => exercise.presenter.view) };
+	}
+
+
 
 	updateUI() {
 		if (this.view == undefined) {
@@ -29984,7 +30005,26 @@ class WorkoutRoutinePresenter extends Presenter {
 	}
 }
 
+class ExercisePresenter extends Presenter {
+	createView(data) {
+		return new components.Exercise(data);
+	}
+
+	setAdded() {
+		this.view.state = { sets: this.model.data.sets.map((s) => s.presenter.view) };
+	}
+}
+
+class ExerciseSetPresenter extends Presenter{
+	createView(data) {
+		var propData = { id: data.id, rep_goal: data.rep_goal, weight: data.weight };
+		return new components.ExerciseSet(propData);
+	}
+}
+
 module.exports = {};
 module.exports.Presenter = Presenter;
 module.exports.WorkoutRoutinePresenter = WorkoutRoutinePresenter;
+module.exports.ExercisePresenter = ExercisePresenter;
+module.exports.ExerciseSetPresenter = ExerciseSetPresenter;
 },{"./components.js":18}]},{},[17]);

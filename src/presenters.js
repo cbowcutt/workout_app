@@ -81,6 +81,10 @@ class ExercisePresenter extends Presenter {
 	createView(data) {
 		return new components.Exercise(data);
 	}
+
+	setAdded() {
+		this.view.state = { sets: this.model.data.sets.map((s) => s.presenter.view) };
+	}
 }
 
 class ExerciseSetPresenter extends Presenter{

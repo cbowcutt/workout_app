@@ -7,9 +7,8 @@ var Exercise = components.Exercise;
 var ExerciseSet = components.ExerciseSet;
 
 var workoutModel = new models.WorkoutRoutineModel({id: "myWorkout"});
-var workoutRoutinePresenter = new presenters.WorkoutRoutinePresenter();
-workoutRoutinePresenter.subscribeToModel(workoutModel);
 workoutModel.addExercise({ id: "exercise-squat",exercise_name: "squat"});
+workoutModel.data.exercises[0].addExerciseSet({ weight: 120, rep_goal: 10 })
  
 
 // var workout = new WorkoutRoutine({id: "myWorkout"});
@@ -17,7 +16,7 @@ workoutModel.addExercise({ id: "exercise-squat",exercise_name: "squat"});
 // workout.state.exercises[0].addSet(new components.ExerciseSet({ id: "set", weight: 3, rep_goal: 5, reps_completed: 5 }));
 
   var container = document.getElementById('workout-container')
-  ReactDOM.render(workoutRoutinePresenter.view.render(), container);
+  ReactDOM.render(workoutModel.presenter.view.render(), container);
   
   $('.ui.accordion').accordion();
   $('#exercise-progress').progress({ percent: 55});

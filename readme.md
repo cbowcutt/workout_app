@@ -4,15 +4,13 @@ In the root directory of the repository:
 
 ```
 npm install
-browserify src/js/app.js -o public/js/app.js
+npm run-script bundle
 ```
 
 To run:
 
-Make sure you have the npm module serve installed. In the root directory of the repository:
-
 ```
-serve
+npm run-script serve
 ```
 
 Go to <host>:<port>/public/html

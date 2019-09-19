@@ -7,10 +7,13 @@ class ExerciseSet extends React.Component {
     this.state = { reps_completed: 0 };
   }
 
+  componentDidMount() {
+  }
+
   handleChange(e) {
     var newState = { reps_completed: e.target.value};
     console.log(newState);
-    this.state = newState;
+    this.setState({ reps_completed: e.target.value});
   }
 
   subscribeToPresenter(presenter)  {

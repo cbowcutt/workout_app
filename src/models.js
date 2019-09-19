@@ -1,4 +1,8 @@
-import { WorkoutRoutinePresenter, ExercisePresenter, ExerciseSetPresenter} from "./presenters.js"
+var presenters = require("./presenters");
+
+var WorkoutRoutinePresenter = presenters.WorkoutRoutinePresenter;
+var ExercisePresenter = presenters.ExercisePresenter;
+var ExerciseSetPresenter = presenters.ExerciseSetPresenter;
 
 class Model {
 	constructor(_data)
@@ -56,6 +60,9 @@ class ExerciseModel extends Model {
 		{
 			throw new Error("data.exercise_name must not be undefined");
 		}
+		if (this.data.sets == undefined) {
+			this.data.sets = [];
+		}
 		this.presenter = new ExercisePresenter();
 		this.presenter.subscribeToModel(this);
 	}
@@ -63,6 +70,7 @@ class ExerciseModel extends Model {
 	addExerciseSet(exerciseSetData) {
 		ValidateExerciseSetData(exerciseSetData);
 		this.data.sets.push(new ExerciseSetModel(exerciseSetData));
+		this.presenter.setAdded();
 	}
 }
 
@@ -73,9 +81,9 @@ function ValidateExerciseSetData(data) {
 	if (data.rep_goal == undefined) {
 		throw new Error("rep_goal is undefined")
 	}
-	if (data.reps_completed == undefined) {
-		throw new Error("reps_completed is undefined")
-	}
+	// if (data.reps_completed == undefined) {
+	// 	throw new Error("reps_completed is undefined")
+	// }
 }
 
 class ExerciseSetModel extends Model {

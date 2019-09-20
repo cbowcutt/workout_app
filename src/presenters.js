@@ -1,5 +1,6 @@
 var components = require('./components.js');
 var PresenterController = require('./presenterController.js');
+var ReactDOM = require('react-dom')
 class Presenter {
 	
 
@@ -26,6 +27,18 @@ class Presenter {
 
 	subscribeToComponent(component) {
 		this.view = component;
+	}
+
+	updateUI() {
+		// try {
+		// 	var container = ReactDOM.findDOMNode(this.view);
+		// 	ReactDOM.render(this.view.render(), container);
+		// }
+		// catch (exception) {
+		// 	console.log("could not render")
+		// }
+		
+		
 	}
 }
 
@@ -80,7 +93,15 @@ class ExercisePresenter extends Presenter {
 	}
 
 	setAdded() {
-		this.view.state = { sets: this.model.data.sets.map((s) => s.presenter.view) };
+		this.view.state = { sets: this.model.data.sets.map((s) => s.presenter.view)}
+		global.updateWorkoutRoutineView();
+	}
+
+	buttonClicked(e, behavior)
+	{
+		if (behavior == "addNewExerciseSet") {
+			this.model.addExerciseSet({ weight: 0, rep_goal: 0 });
+		}
 	}
 }
 

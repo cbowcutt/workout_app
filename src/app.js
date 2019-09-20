@@ -6,7 +6,12 @@ var WorkoutRoutine = components.WorkoutRoutine;
 var Exercise = components.Exercise;
 var ExerciseSet = components.ExerciseSet;
 
+global.appContainer = document.getElementById('workout-container')
 window.workoutModel = new models.WorkoutRoutineModel({id: "myWorkout"});
+global.rendered = workoutModel.presenter.view.render()
+global.updateWorkoutRoutineView = function() {
+  ReactDOM.render(rendered, global.appContainer);
+}
 workoutModel.addExercise({ id: "exercise-squat",exercise_name: "squat"});
 workoutModel.data.exercises[0].addExerciseSet({ weight: 120, rep_goal: 10 })
  
@@ -15,8 +20,13 @@ workoutModel.data.exercises[0].addExerciseSet({ weight: 120, rep_goal: 10 })
 // workout.addExercise(new Exercise({ id: "exercise-squat",exercise_name: "squat"}));
 // workout.state.exercises[0].addSet(new components.ExerciseSet({ id: "set", weight: 3, rep_goal: 5, reps_completed: 5 }));
 
-window.appContainer = document.getElementById('workout-container')
-  ReactDOM.render(workoutModel.presenter.view.render(), appContainer);
+
+
+
+
+
+global.updateWorkoutRoutineView();
+
   
   $('.ui.accordion').accordion();
   $('#exercise-progress').progress({ percent: 55});

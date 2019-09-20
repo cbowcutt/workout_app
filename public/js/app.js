@@ -29663,13 +29663,20 @@ var controller = {
     },
     registerPresenter: function (componentID, presenter) {
         global.idToPresenter[componentID] = presenter;
-    }
+    },
+
+    buttonClicked: function(event, buttonProps) {
+        console.log("SUP");
+        console.log(global.idToPresenter);
+        global.idToPresenter[buttonProps.ownerId].buttonClicked(event, buttonProps.behavior)
+    } 
 }
 
 
 module.exports = controller;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],18:[function(require,module,exports){
+(function (global){
 var ReactDOM = require('react-dom');
 var components = require('./components.js');
 var models = require('./models.js');
@@ -29678,7 +29685,12 @@ var WorkoutRoutine = components.WorkoutRoutine;
 var Exercise = components.Exercise;
 var ExerciseSet = components.ExerciseSet;
 
+global.appContainer = document.getElementById('workout-container')
 window.workoutModel = new models.WorkoutRoutineModel({id: "myWorkout"});
+global.rendered = workoutModel.presenter.view.render()
+global.updateWorkoutRoutineView = function() {
+  ReactDOM.render(rendered, global.appContainer);
+}
 workoutModel.addExercise({ id: "exercise-squat",exercise_name: "squat"});
 workoutModel.data.exercises[0].addExerciseSet({ weight: 120, rep_goal: 10 })
  
@@ -29687,11 +29699,17 @@ workoutModel.data.exercises[0].addExerciseSet({ weight: 120, rep_goal: 10 })
 // workout.addExercise(new Exercise({ id: "exercise-squat",exercise_name: "squat"}));
 // workout.state.exercises[0].addSet(new components.ExerciseSet({ id: "set", weight: 3, rep_goal: 5, reps_completed: 5 }));
 
-window.appContainer = document.getElementById('workout-container')
-  ReactDOM.render(workoutModel.presenter.view.render(), appContainer);
+
+
+
+
+
+global.updateWorkoutRoutineView();
+
   
   $('.ui.accordion').accordion();
   $('#exercise-progress').progress({ percent: 55});
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./components.js":19,"./models.js":20,"./presenters.js":22,"react-dom":7}],19:[function(require,module,exports){
 var React = require('react');
 var PresenterController = require('./PresenterController');
@@ -29775,7 +29793,8 @@ class Exercise extends React.Component {
               return s.render()
             }))
         )
-      )
+      ),
+      new Button({ id: this.props.id + "-addNewExerciseSetButton", ownerId: this.props.id, behavior: "addNewExerciseSet"}).render()
     );
   }
 }
@@ -29792,7 +29811,7 @@ class WorkoutRoutine extends React.Component {
   {
     var newExercises = this.state.exercises;
     newExercises.push(exercise);
-    this.state = { exercises: newExercises};
+    this.setState({ exercises: newExercises});
     
   }
   componentDidMount() {
@@ -29826,10 +29845,26 @@ class AddExerciseButton extends React.Component
     return React.createElement('div', { className: "ui button "});
   }
 }
-class AddSetButton extends React.Component
+class AddExerciseSetButton extends React.Component
 {
+  constructor(props) {
+    super(props)
+  }
   render() {
-    return React.createElement('div', { className: "ui button "});
+    return React.createElement('div', { className: "ui button ", behavior: "addExercise", onClick: e => { PresenterController.buttonClicked(e, this); }});
+  }
+}
+
+class Button extends React.Component
+{
+  // this.props.
+  constructor(props) {
+    super(props)
+    // this.props.ownerId should be defined
+    // this.props.behavior should be defined
+  }
+  render() {
+    return React.createElement('div', { id: this.props.id, className: "ui button ", onClick: e => { PresenterController.buttonClicked(e, this.props) }});
   }
 }
 
@@ -29839,7 +29874,7 @@ class ExerciseSetForm extends React.Component
     return React.createElement('form', { onSubmit: () => {} }, [
       React.createElement('label', null, [
         "Weight",
-        React.createElement("input", {type: "text"})
+        React.createElement("input", {id: this.props.id, type: "text"})
       ])
     ]);
   }
@@ -29850,7 +29885,7 @@ module.exports.Exercise = Exercise;
 module.exports.ExerciseSet = ExerciseSet;
 module.exports.WorkoutRoutine = WorkoutRoutine;
 module.exports.AddExerciseButton = AddExerciseButton;
-
+module.exports.Button = Button;
 
 
 
@@ -29940,9 +29975,6 @@ function ValidateExerciseSetData(data) {
 	if (data.rep_goal == undefined) {
 		throw new Error("rep_goal is undefined")
 	}
-	// if (data.reps_completed == undefined) {
-	// 	throw new Error("reps_completed is undefined")
-	// }
 }
 
 class ExerciseSetModel extends Model {
@@ -29974,8 +30006,10 @@ module.exports.ExerciseSetModel = ExerciseSetModel;
 },{"./presenters":22}],21:[function(require,module,exports){
 arguments[4][17][0].apply(exports,arguments)
 },{"dup":17}],22:[function(require,module,exports){
+(function (global){
 var components = require('./components.js');
 var PresenterController = require('./presenterController.js');
+var ReactDOM = require('react-dom')
 class Presenter {
 	
 
@@ -30002,6 +30036,18 @@ class Presenter {
 
 	subscribeToComponent(component) {
 		this.view = component;
+	}
+
+	updateUI() {
+		// try {
+		// 	var container = ReactDOM.findDOMNode(this.view);
+		// 	ReactDOM.render(this.view.render(), container);
+		// }
+		// catch (exception) {
+		// 	console.log("could not render")
+		// }
+		
+		
 	}
 }
 
@@ -30056,7 +30102,15 @@ class ExercisePresenter extends Presenter {
 	}
 
 	setAdded() {
-		this.view.state = { sets: this.model.data.sets.map((s) => s.presenter.view) };
+		this.view.state = { sets: this.model.data.sets.map((s) => s.presenter.view)}
+		global.updateWorkoutRoutineView();
+	}
+
+	buttonClicked(e, behavior)
+	{
+		if (behavior == "addNewExerciseSet") {
+			this.model.addExerciseSet({ weight: 0, rep_goal: 0 });
+		}
 	}
 }
 
@@ -30087,4 +30141,5 @@ module.exports.Presenter = Presenter;
 module.exports.WorkoutRoutinePresenter = WorkoutRoutinePresenter;
 module.exports.ExercisePresenter = ExercisePresenter;
 module.exports.ExerciseSetPresenter = ExerciseSetPresenter;
-},{"./components.js":19,"./presenterController.js":21}]},{},[18]);
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./components.js":19,"./presenterController.js":21,"react-dom":7}]},{},[18]);

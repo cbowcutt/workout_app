@@ -80,7 +80,8 @@ class Exercise extends React.Component {
               return s.render()
             }))
         )
-      )
+      ),
+      new Button({ id: this.props.id + "-addNewExerciseSetButton", ownerId: this.props.id, behavior: "addNewExerciseSet"}).render()
     );
   }
 }
@@ -97,7 +98,7 @@ class WorkoutRoutine extends React.Component {
   {
     var newExercises = this.state.exercises;
     newExercises.push(exercise);
-    this.state = { exercises: newExercises};
+    this.setState({ exercises: newExercises});
     
   }
   componentDidMount() {

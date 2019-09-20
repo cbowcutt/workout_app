@@ -1,25 +1,22 @@
 var components = require('./components.js');
+var PresenterController = require('./presenterController.js');
 class Presenter {
 	
 
 	constructor()
 	{
-		this.components = {};
-		// this.addEventListener("ModelChanged", (data) => {
-			// var modelId = data.id;
-			// var component = this.components[modelId];
-			// component.setState(data);
-		// })
 	}
 	
 	
 	subscribeToModel(_model) {
 		this.model = _model;
 		this.model.subscribeToPresenter(this);
+
 		if (this.view == undefined) {
 			this.view = this.createView(_model.data);
 			this.view.subscribeToPresenter(this);
 			this.subscribeToComponent(this.view);
+			PresenterController.registerPresenter(_model.data.id, this);
 		}
 	}
 

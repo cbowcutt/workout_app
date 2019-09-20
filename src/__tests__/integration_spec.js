@@ -94,11 +94,10 @@ it("ExerciseSetModel should update when input entered into the associated compoe
 	act(() => {
 		render(exerciseSetModel.presenter.view.render(), container);
   })
-  console.log(container);
-    const input = container.querySelector("tr > td > input");
-    input.value = 4
-    Simulate.change(input);
-    
-    expect(exerciseSetModel.data.reps_completed).toBe("4");
-    expect(exerciseSetModel.presenter.view.state.reps_completed).toBe("4");
+  const input = container.querySelector("input");
+  input.value = 4
+  Simulate.change(input);
+  
+  expect(exerciseSetModel.data.reps_completed).toBe("4");
+  expect(exerciseSetModel.presenter.view.state.reps_completed).toBe("4");
 })

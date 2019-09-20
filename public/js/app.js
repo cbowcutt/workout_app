@@ -29649,6 +29649,27 @@ if (process.env.NODE_ENV === 'production') {
 
 }).call(this,require('_process'))
 },{"./cjs/scheduler-tracing.development.js":11,"./cjs/scheduler-tracing.production.min.js":12,"_process":2}],17:[function(require,module,exports){
+(function (global){
+global.idToPresenter = {};
+
+var controller = {
+
+    inputReceived: function (event, componentID) {
+        global.idToPresenter[componentID].inputReceived(event);
+    },
+
+    mapToPresenter: function (componentID) {
+        return global.idToPresenter[componentID];
+    },
+    registerPresenter: function (componentID, presenter) {
+        global.idToPresenter[componentID] = presenter;
+    }
+}
+
+
+module.exports = controller;
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],18:[function(require,module,exports){
 var ReactDOM = require('react-dom');
 var components = require('./components.js');
 var models = require('./models.js');
@@ -29666,18 +29687,19 @@ workoutModel.data.exercises[0].addExerciseSet({ weight: 120, rep_goal: 10 })
 // workout.addExercise(new Exercise({ id: "exercise-squat",exercise_name: "squat"}));
 // workout.state.exercises[0].addSet(new components.ExerciseSet({ id: "set", weight: 3, rep_goal: 5, reps_completed: 5 }));
 
-  var container = document.getElementById('workout-container')
-  ReactDOM.render(workoutModel.presenter.view.render(), container);
+window.appContainer = document.getElementById('workout-container')
+  ReactDOM.render(workoutModel.presenter.view.render(), appContainer);
   
   $('.ui.accordion').accordion();
   $('#exercise-progress').progress({ percent: 55});
-},{"./components.js":18,"./models.js":19,"./presenters.js":20,"react-dom":7}],18:[function(require,module,exports){
+},{"./components.js":19,"./models.js":20,"./presenters.js":22,"react-dom":7}],19:[function(require,module,exports){
 var React = require('react');
+var PresenterController = require('./PresenterController');
 class ExerciseSet extends React.Component {
   constructor(props) {
     super(props);
 
-    this.onChange = this.handleChange.bind(this);
+    //this.onChange = controller.inputReceived.bind(this);
     this.state = { reps_completed: 0 };
   }
 
@@ -29706,7 +29728,7 @@ class ExerciseSet extends React.Component {
         React.createElement('td', { key: 'rep_goal-' + this.props.id}, this.props.rep_goal),
         React.createElement('td', { id: "reps_completed-" + this.props.id, key: 'reps_completed-' + this.props.id},
           React.createElement('div', {className: 'ui input'},
-            React.createElement('input',{  onChange: (e) => { this.presenter.inputReceived(e) }})
+            React.createElement('input',{  onChange: (e) => { PresenterController.inputReceived(e, this.props.id) }})
           )
           
         )
@@ -29833,7 +29855,8 @@ module.exports.AddExerciseButton = AddExerciseButton;
 
 
 
-},{"react":10}],19:[function(require,module,exports){
+},{"./PresenterController":17,"react":10}],20:[function(require,module,exports){
+(function (global){
 var presenters = require("./presenters");
 
 var WorkoutRoutinePresenter = presenters.WorkoutRoutinePresenter;
@@ -29847,7 +29870,7 @@ class Model {
 			_data = { id: AssignNewID() };
 		}
 		else if (_data.id == undefined) {
-			_data.id = { id: AssignNewID() };
+			_data.id = AssignNewID();
 		}
 		this.data = _data;
 	}
@@ -29936,10 +29959,10 @@ class ExerciseSetModel extends Model {
 	}
 }
 
-var id = 0;
+global.id = 0;
 
-function AssignNewID() {
-	return id++;
+global.AssignNewID = function() {
+	return global.id++;
 }
 
 module.exports = {};
@@ -29947,29 +29970,29 @@ module.exports.Model = Model;
 module.exports.WorkoutRoutineModel = WorkoutRoutineModel;
 module.exports.ExerciseModel = ExerciseModel;
 module.exports.ExerciseSetModel = ExerciseSetModel;
-},{"./presenters":20}],20:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./presenters":22}],21:[function(require,module,exports){
+arguments[4][17][0].apply(exports,arguments)
+},{"dup":17}],22:[function(require,module,exports){
 var components = require('./components.js');
+var PresenterController = require('./presenterController.js');
 class Presenter {
 	
 
 	constructor()
 	{
-		this.components = {};
-		// this.addEventListener("ModelChanged", (data) => {
-			// var modelId = data.id;
-			// var component = this.components[modelId];
-			// component.setState(data);
-		// })
 	}
 	
 	
 	subscribeToModel(_model) {
 		this.model = _model;
 		this.model.subscribeToPresenter(this);
+
 		if (this.view == undefined) {
 			this.view = this.createView(_model.data);
 			this.view.subscribeToPresenter(this);
 			this.subscribeToComponent(this.view);
+			PresenterController.registerPresenter(_model.data.id, this);
 		}
 	}
 
@@ -30064,4 +30087,4 @@ module.exports.Presenter = Presenter;
 module.exports.WorkoutRoutinePresenter = WorkoutRoutinePresenter;
 module.exports.ExercisePresenter = ExercisePresenter;
 module.exports.ExerciseSetPresenter = ExerciseSetPresenter;
-},{"./components.js":18}]},{},[17]);
+},{"./components.js":19,"./presenterController.js":21}]},{},[18]);

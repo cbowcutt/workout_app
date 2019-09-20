@@ -11,7 +11,7 @@ class Model {
 			_data = { id: AssignNewID() };
 		}
 		else if (_data.id == undefined) {
-			_data.id = { id: AssignNewID() };
+			_data.id = AssignNewID();
 		}
 		this.data = _data;
 	}
@@ -100,10 +100,10 @@ class ExerciseSetModel extends Model {
 	}
 }
 
-var id = 0;
+global.id = 0;
 
-function AssignNewID() {
-	return id++;
+global.AssignNewID = function() {
+	return global.id++;
 }
 
 module.exports = {};

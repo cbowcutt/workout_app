@@ -1,9 +1,10 @@
 var React = require('react');
+var PresenterController = require('./PresenterController');
 class ExerciseSet extends React.Component {
   constructor(props) {
     super(props);
 
-    this.onChange = this.handleChange.bind(this);
+    //this.onChange = controller.inputReceived.bind(this);
     this.state = { reps_completed: 0 };
   }
 
@@ -32,7 +33,7 @@ class ExerciseSet extends React.Component {
         React.createElement('td', { key: 'rep_goal-' + this.props.id}, this.props.rep_goal),
         React.createElement('td', { id: "reps_completed-" + this.props.id, key: 'reps_completed-' + this.props.id},
           React.createElement('div', {className: 'ui input'},
-            React.createElement('input',{  onChange: (e) => { this.presenter.inputReceived(e) }})
+            React.createElement('input',{  onChange: (e) => { PresenterController.inputReceived(e, this.props.id) }})
           )
           
         )

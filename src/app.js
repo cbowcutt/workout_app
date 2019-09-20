@@ -15,8 +15,8 @@ workoutModel.data.exercises[0].addExerciseSet({ weight: 120, rep_goal: 10 })
 // workout.addExercise(new Exercise({ id: "exercise-squat",exercise_name: "squat"}));
 // workout.state.exercises[0].addSet(new components.ExerciseSet({ id: "set", weight: 3, rep_goal: 5, reps_completed: 5 }));
 
-  var container = document.getElementById('workout-container')
-  ReactDOM.render(workoutModel.presenter.view.render(), container);
+window.appContainer = document.getElementById('workout-container')
+  ReactDOM.render(workoutModel.presenter.view.render(), appContainer);
   
   $('.ui.accordion').accordion();
   $('#exercise-progress').progress({ percent: 55});

@@ -77,6 +77,8 @@ it("ExerciseModel should be constructed with an object that has exercise_name", 
 
 	expect(() => { new ExerciseModel({ id: 0 })}).toThrow(new Error("data.exercise_name must not be undefined"));
 });
+
+
 	
 
 

@@ -131,10 +131,26 @@ class AddExerciseButton extends React.Component
     return React.createElement('div', { className: "ui button "});
   }
 }
-class AddSetButton extends React.Component
+class AddExerciseSetButton extends React.Component
 {
+  constructor(props) {
+    super(props)
+  }
   render() {
-    return React.createElement('div', { className: "ui button "});
+    return React.createElement('div', { className: "ui button ", behavior: "addExercise", onClick: e => { PresenterController.buttonClicked(e, this); }});
+  }
+}
+
+class Button extends React.Component
+{
+  // this.props.
+  constructor(props) {
+    super(props)
+    // this.props.ownerId should be defined
+    // this.props.behavior should be defined
+  }
+  render() {
+    return React.createElement('div', { id: this.props.id, className: "ui button ", onClick: e => { PresenterController.buttonClicked(e, this.props) }});
   }
 }
 
@@ -144,7 +160,7 @@ class ExerciseSetForm extends React.Component
     return React.createElement('form', { onSubmit: () => {} }, [
       React.createElement('label', null, [
         "Weight",
-        React.createElement("input", {type: "text"})
+        React.createElement("input", {id: this.props.id, type: "text"})
       ])
     ]);
   }
@@ -155,7 +171,7 @@ module.exports.Exercise = Exercise;
 module.exports.ExerciseSet = ExerciseSet;
 module.exports.WorkoutRoutine = WorkoutRoutine;
 module.exports.AddExerciseButton = AddExerciseButton;
-
+module.exports.Button = Button;
 
 
 

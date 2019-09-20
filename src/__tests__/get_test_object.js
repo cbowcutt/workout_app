@@ -1,4 +1,4 @@
-import { Exercise, ExerciseSet, WorkoutRoutine } from '../components.js';
+import { Exercise, ExerciseSet, WorkoutRoutine, Button } from '../components.js';
 import { ExerciseModel, WorkoutRoutineModel, ExerciseSetModel } from '../models.js';
 import { WorkoutRoutinePresenter} from '../presenters.js';
 
@@ -31,6 +31,11 @@ function getWorkoutRoutineModelTestObject() {
 	return new WorkoutRoutineModel({ id: "test-workoutRoutine"});
 }
 
+function getButtonTestObject() {
+	return new Button({id: "button", ownerId: "owner", behavior: "behavior"});
+}
+
+module.exports.getButtonTestObject = getButtonTestObject;
 module.exports.getExerciseTestObject = getExerciseTestObject;
 module.exports.getExerciseSetTestObject = getExerciseSetTestObject;
 module.exports.getWorkoutRoutinePresenterTestObject = getWorkoutRoutinePresenterTestObject;

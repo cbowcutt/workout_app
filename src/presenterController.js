@@ -11,7 +11,13 @@ var controller = {
     },
     registerPresenter: function (componentID, presenter) {
         global.idToPresenter[componentID] = presenter;
-    }
+    },
+
+    buttonClicked: function(event, buttonProps) {
+        console.log("SUP");
+        console.log(global.idToPresenter);
+        global.idToPresenter[buttonProps.ownerId].buttonClicked(event, buttonProps.behavior)
+    } 
 }
 
 

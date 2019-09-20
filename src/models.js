@@ -81,9 +81,6 @@ function ValidateExerciseSetData(data) {
 	if (data.rep_goal == undefined) {
 		throw new Error("rep_goal is undefined")
 	}
-	// if (data.reps_completed == undefined) {
-	// 	throw new Error("reps_completed is undefined")
-	// }
 }
 
 class ExerciseSetModel extends Model {

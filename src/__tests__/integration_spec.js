@@ -1,11 +1,11 @@
 const fs = require('fs');
 // React = require('react');
 // ReactDOM = require('react-dom');
-import { Exercise, ExerciseSet, WorkoutRoutine } from '../components.js';
+import { Exercise, ExerciseSet, WorkoutRoutine, Button } from '../components.js';
 import { ExerciseModel, WorkoutRoutineModel } from '../models.js';
 import { WorkoutRoutinePresenter} from '../presenters.js';
 
-import { getWorkoutRoutinePresenterTestObject, getExerciseSetModelTestObject, getExerciseModelTestObject ,getWorkoutRoutineModelTestObject, getWorkoutRoutineTestObject } from './get_test_object.js';
+import { getButtonTestObject, getWorkoutRoutinePresenterTestObject, getExerciseSetModelTestObject, getExerciseModelTestObject ,getWorkoutRoutineModelTestObject, getWorkoutRoutineTestObject } from './get_test_object.js';
 
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
@@ -100,4 +100,26 @@ it("ExerciseSetModel should update when input entered into the associated compoe
   
   expect(exerciseSetModel.data.reps_completed).toBe("4");
   expect(exerciseSetModel.presenter.view.state.reps_completed).toBe("4");
+})
+
+it("AddExerciseSetButton adds a new ExerciseSet", function () {
+  var exerciseModel = getExerciseModelTestObject();
+})
+
+it("Button should notify PresenterController when it is clicked", function (done){
+  var PresenterController = require("../PresenterController");
+  var button = getButtonTestObject();
+  var mockPresenter = {
+    buttonClicked: (event, behavior)  => {
+      expect(behavior).toBe("behavior");
+      done();
+    }
+  };
+  PresenterController.registerPresenter(button.props.ownerId, mockPresenter);
+  act(() => {
+		render(button.render(), container);
+  })
+  var htmlButton = container.querySelector("#button");
+  expect(htmlButton).toBeDefined();
+  Simulate.click(htmlButton);
 })

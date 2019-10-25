@@ -135,253 +135,252 @@ p.control
 </style>
 </head>
 <body>
-<div class="fixed-top has-background-purple-dark">
-  <div class="container">
-      <h3 class="has-text-weight-bolder has-text-light">Workout App</h3>
-  </div>
-</div>
-    <div class="fixed-bottom has-background-purple-dark">
-      <div class="container tabs is-centered">
-        <ul>
-          <li><a href="#" id="displayBillFilter"><i class="fa fa-sliders fa-2x has-text-light has-text-bold" aria-hidden="true"></i></a></i></li>
-          <li><a href="#" id="history"><i class="fa fa-history fa-2x has-text-light has-text-bold" aria-hidden="true"></i></a></i></li>
-        </ul>
-      </div>
-
-    </div>
-
-</div>
-</div>
-<div id="content-container" class="has-background-black">
-  <div class="box centered-content is-hidden" id="newRoutineForm">
-    <h3 class="has-text-weight-bolder has-text-light">New Workout Routine</h3>
-    <div class="field">
-      <div class="control">
-          <input class="input is-large" type="text" placeholder="Enter Routine Name">
-      </div>
-    </div>
-
-
-    <div class="container card">
-
-        <h4 class="has-text-weight-bolder">Exercises</h4>
-        <div class="columns is-mobile">
-            <div class="column is-half">
-                <h4>Add New Exercise</h4>
-            </div>
-            <div class="column is-half">
-                <p class="card-header-right-column has-text-dark has-text-bold is-size-4 has-text-right">
-                    <button class="button" id="toggleAddNewExercise"><i class="fa fa-chevron-down fa-lg has-text-dark has-text-bold" aria-hidden="true"></i></button>
-                  </p>
-            </div>
-          </div>
-        <div id="addNewExerciseForm" class="is-hidden">
-            <div class="columns is-mobile">
-                <div class="column">
-                    <div class="columns">
-                        <div class="column">
-                            <div class="dropdown is-active">
-                                <div class="dropdown-trigger">
-                                  <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-                                    <span>Select Exercise</span>
-                                  </button>
-                                </div>
-                                
-                              </div>
-                        </div>
-                        <div class="column">
-                            <button class="button"><i class="fa fa-plus fa-lg has-text-dark has-text-bold" aria-hidden="true"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="column">
-                  <div class="columns">
-                      <div class="column">
-                          <div class="control">
-                              <input class="input is-small" type="text" placeholder="Enter Routine Name"></>
-                          </div>
-                      </div>
-                      <div class="column">
-                          <button class="button"><i class="fa fa-plus fa-lg has-text-dark has-text-bold" aria-hidden="true"></i></button>
-                      </div>
-                  </div>
-          
-                </div>
-              </div>
+<div id="workoutApp">
+    <div class="fixed-top has-background-purple-dark">
+        <div class="container">
+            <h3 class="has-text-weight-bolder has-text-light">Workout App</h3>
         </div>
-
-        <div class="tabs is-centered">
-            <ul>
-              <li class="is-active"><a>Squat</a></li>
-              <li><a>Bench Press</a></li>
-              <li><a>Lunge</a></li>      
-            </ul>
-          </div>
-          <div class="columns is-mobile">
-            <div class="column is-half">
-                <h4>Edit Sets</h4>
+      </div>
+          <div class="fixed-bottom has-background-purple-dark">
+            <div class="container tabs is-centered">
+              <ul>
+                <li><a href="#" id="displayBillFilter"><i class="fa fa-sliders fa-2x has-text-light has-text-bold" aria-hidden="true"></i></a></i></li>
+                <li><a href="#" id="history"><i class="fa fa-history fa-2x has-text-light has-text-bold" aria-hidden="true"></i></a></i></li>
+              </ul>
             </div>
-            <div class="column is-half">
-                <p class="card-header-right-column has-text-dark has-text-bold is-size-4 has-text-right">
-                    <button class="button" id="toggleEditSetsForm"><i class="fa fa-chevron-down fa-lg has-text-dark has-text-bold" aria-hidden="true"></i></button>
-                  </p>
+      
+          </div>
+      
+      
+      
+      <div id="content-container" class="has-background-black">
+        <div class="box centered-content is-hidden" id="newRoutineForm">
+          <h3 class="has-text-weight-bolder has-text-light">New Workout Routine</h3>
+          <div class="field">
+            <div class="control">
+                <input class="input is-large" type="text" placeholder="Enter Routine Name">
             </div>
           </div>
-        <div id="editSetsForm" class="is-hidden">
-            <table class="table is-striped has-text-centered">
-                <thead>
-                    <tr>
-                      <th>Weight</th>
-                      <th>Rep Goal</th>            
-                    </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                        125
-                    </td>
-                    <td>
-    5
-                      </td>
-                      <td>
-                          <div class="field">
-                              <div class="control">
-                                  <button class="button"><i class="fa fa-minus-circle fa-lg has-text-dark has-text-bold" aria-hidden="true"></i></button>    
+      
+      
+          <div class="container card">
+            <expandable-card-header title="Exercises"></expandable-card-header>
+              <h4 class="has-text-weight-bolder">Exercises</h4>
+              <div class="columns is-mobile">
+                  <div class="column is-half">
+                      <h4>Add New Exercise</h4>
+                  </div>
+                  <div class="column is-half">
+                      <p class="card-header-right-column has-text-dark has-text-bold is-size-4 has-text-right">
+                          <button class="button" id="toggleAddNewExercise"><i class="fa fa-chevron-down fa-lg has-text-dark has-text-bold" aria-hidden="true"></i></button>
+                        </p>
+                  </div>
+                </div>
+              <div id="addNewExerciseForm" class="is-hidden">
+                  <div class="columns is-mobile">
+                      <div class="column">
+                          <div class="columns">
+                              <div class="column">
+                                  <div class="dropdown is-active">
+                                      <div class="dropdown-trigger">
+                                        <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                                          <span>Select Exercise</span>
+                                        </button>
+                                      </div>
+                                      
+                                    </div>
                               </div>
-                            </div>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td>
-                        <div class="field">
-                          <div class="control">
-                            <input class="input is-small" type="text" placeholder="Small input">
+                              <div class="column">
+                                  <button class="button"><i class="fa fa-plus fa-lg has-text-dark has-text-bold" aria-hidden="true"></i></button>
+                              </div>
                           </div>
-                        </div>
-                      </td>
-                      <td>
-                          <div class="field">
-                            <div class="control">
-                              <input class="input is-small" type="text" placeholder="Small input">
-                            </div>
-                          </div>
-                        </td>
-                        <td>
-                            <div class="field">
+                      </div>
+                      <div class="column">
+                        <div class="columns">
+                            <div class="column">
                                 <div class="control">
-                                    <button class="button"><i class="fa fa-minus-circle fa-lg has-text-dark has-text-bold" aria-hidden="true"></i></button>    
+                                    <input class="input is-small" type="text" placeholder="Enter Routine Name"></>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <button class="button"><i class="fa fa-plus fa-lg has-text-dark has-text-bold" aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                
+                      </div>
+                    </div>
+              </div>
+      
+              <div class="tabs is-centered">
+                  <ul>
+                    <li class="is-active"><a>Squat</a></li>
+                    <li><a>Bench Press</a></li>
+                    <li><a>Lunge</a></li>      
+                  </ul>
+                </div>
+                <div class="columns is-mobile">
+                  <div class="column is-half">
+                      <h4>Edit Sets</h4>
+                  </div>
+                  <div class="column is-half">
+                      <p class="card-header-right-column has-text-dark has-text-bold is-size-4 has-text-right">
+                          <button class="button" id="toggleEditSetsForm"><i class="fa fa-chevron-down fa-lg has-text-dark has-text-bold" aria-hidden="true"></i></button>
+                        </p>
+                  </div>
+                </div>
+              <div id="editSetsForm" class="is-hidden">
+                  <table class="table is-striped has-text-centered">
+                      <thead>
+                          <tr>
+                            <th>Weight</th>
+                            <th>Rep Goal</th>            
+                          </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                              125
+                          </td>
+                          <td>
+          5
+                            </td>
+                            <td>
+                                <div class="field">
+                                    <div class="control">
+                                        <button class="button"><i class="fa fa-minus-circle fa-lg has-text-dark has-text-bold" aria-hidden="true"></i></button>    
+                                    </div>
+                                  </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                              <div class="field">
+                                <div class="control">
+                                  <input class="input is-small" type="text" placeholder="Small input">
                                 </div>
                               </div>
                             </td>
-                        </td>
-                    </tr>
-                  <tr>
-                      
-                  </tr>
-                </tbody>
-        
-              </table>
-        </div>
-
-    </div>
-
-    <div class="container has-text-centered">
-        <button id="" class="button is-primary">Create New Routine</button>
-        <button  id="cancelCreateNewRoutine" class="button">Cancel</button>
-      </div>
-
-  </div>
-  <div class="centered-content" id="routinesDisplay">
-      <div class="card">
-
-          <div class="card-content">
-            <div class="columns is-mobile">
-              <div class="column is-half">
-                  <p class="card-header-title has-text-dark has-text-bold is-size-4">
-                      Leg Day
-                  </p>
-              </div>
-              <div class="column is-half">
-                  <p class="card-header-right-column has-text-dark has-text-bold is-size-4 has-text-right">
-                    <button class="button" id="toggleRoutineLegDayCardContent" ><i class="fa fa-chevron-down fa-lg has-text-dark has-text-bold" aria-hidden="true"></i></button>
-                  </p>
-              </div>
-            </div>
-            <div class="container is-hidden" id="routineLegDayCardContent">
-                <div class="tabs is-centered">
-                    <ul>
-                      <li class="is-active"><a>Squat</a></li>
-                      <li><a>Leg Press</a></li>
-                      <li><a>Lunge</a></li>
-                      <li><a>Calf Raise</a></li>
-                      <li><a>Leg Press</a></li>
-                      <li><a>Lunge</a></li>
-                      <li><a>Calf Raise</a></li>
-                    </ul>
-                  </div>
-                  <table class="table is-striped has-text-centered">
-                    <thead>
-                        <tr >
-                          <th>Weight</th>
-                          <th>Rep Goal</th>
-                          <th>Reps Acheived</th>
+                            <td>
+                                <div class="field">
+                                  <div class="control">
+                                    <input class="input is-small" type="text" placeholder="Small input">
+                                  </div>
+                                </div>
+                              </td>
+                              <td>
+                                  <div class="field">
+                                      <div class="control">
+                                          <button class="button"><i class="fa fa-minus-circle fa-lg has-text-dark has-text-bold" aria-hidden="true"></i></button>    
+                                      </div>
+                                    </div>
+                                  </td>
+                              </td>
+                          </tr>
+                        <tr>
+                            
                         </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>125</td>
-                        <td>5</td>
-                        <td>5</td>
-                      </tr>
-                      <tr>
-                          <td>125</td>
-                          <td>5</td>
-                          <td>5</td>
-                      </tr>
-                      <tr>
-                          
-                      </tr>
-                    </tbody>
-
-                  </table>
-                  <div class="columns is-mobile">
-                      <div class="column is-one-quarter">
-                          <div class="field">
-                              <div class="control">
-                                <input class="input is-small" type="text" placeholder="Small input">
-                              </div>
-                            </div>
-                      </div>
-                      <div class="column is-one-quarter">
-                          <div class="field">
-                              <div class="control">
-                                <input class="input is-small" type="text" placeholder="Small input">
-                              </div>
-                            </div>
-                      </div>
-                      <div class="column is-one-quarter">
-                          <div class="field">
-                              <div class="control">
-                                <input class="input is-small" type="text" placeholder="Small input">
-                              </div>
-                            </div>
-                      </div>
-                      <div class="column is-one-quarter">
-                        <a href="#">
-                          <button class="button"><i class="fa fa-plus fa-lg has-text-dark has-text-bold" aria-hidden="true"></i></button>                    
-                        </a>
-                      </div>
-            </div>
-
+                      </tbody>
+              
+                    </table>
+              </div>
+      
           </div>
+      
+          <div class="container has-text-centered">
+              <button id="" class="button is-primary">Create New Routine</button>
+              <button  id="cancelCreateNewRoutine" class="button">Cancel</button>
+            </div>
+      
         </div>
-
-      </div>
-      <div class="container has-text-centered">
-        <button id="newRoutine" class="button is-primary">Create New Routine</button>
-
+        <div class="centered-content" id="routinesDisplay">
+          <workout-routine
+            v-for="routine in workoutRoutines"
+            v-bind:title="routine.title"
+            v-bind:content="routine.content"
+            v-bind:id="routine.key"
+          ></workout-routine>
+            <div class="card">
+      
+                <div class="card-content">
+                  <expandable-card-header title="Leg Day"  buttonID="toggleRoutineLegDayCardContent"></expandable-card-header>
+                  <div class="container is-hidden" id="routineLegDayCardContent">
+                      <div class="tabs is-centered">
+                          <ul>
+                            <li class="is-active"><a>Squat</a></li>
+                            <li><a>Leg Press</a></li>
+                            <li><a>Lunge</a></li>
+                            <li><a>Calf Raise</a></li>
+                            <li><a>Leg Press</a></li>
+                            <li><a>Lunge</a></li>
+                            <li><a>Calf Raise</a></li>
+                          </ul>
+                        </div>
+                        <table class="table is-striped has-text-centered">
+                          <thead>
+                              <tr >
+                                <th>Weight</th>
+                                <th>Rep Goal</th>
+                                <th>Reps Acheived</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>125</td>
+                              <td>5</td>
+                              <td>5</td>
+                            </tr>
+                            <tr>
+                                <td>125</td>
+                                <td>5</td>
+                                <td>5</td>
+                            </tr>
+                            <tr>
+                                
+                            </tr>
+                          </tbody>
+      
+                        </table>
+                        <div class="columns is-mobile">
+                            <div class="column is-one-quarter">
+                                <div class="field">
+                                    <div class="control">
+                                      <input class="input is-small" type="text" placeholder="Small input">
+                                    </div>
+                                  </div>
+                            </div>
+                            <div class="column is-one-quarter">
+                                <div class="field">
+                                    <div class="control">
+                                      <input class="input is-small" type="text" placeholder="Small input">
+                                    </div>
+                                  </div>
+                            </div>
+                            <div class="column is-one-quarter">
+                                <div class="field">
+                                    <div class="control">
+                                      <input class="input is-small" type="text" placeholder="Small input">
+                                    </div>
+                                  </div>
+                            </div>
+                            <div class="column is-one-quarter">
+                              <a href="#">
+                                <button class="button"><i class="fa fa-plus fa-lg has-text-dark has-text-bold" aria-hidden="true"></i></button>                    
+                              </a>
+                            </div>
+                  </div>
+      
+                </div>
+              </div>
+      
+            </div>
+            <div class="container has-text-centered">
+              <button id="newRoutine" class="button is-primary">Create New Routine</button>
+      
+            </div>
       </div>
 </div>
+</div>
+
 <script>
 
 function hideElement(element)
@@ -404,6 +403,64 @@ function toggleDisplay(element)
   if (!isDisplayed(element)) hideElement(element);
   else displayElement(element);
 }
+
+var toggleContent = 'togglecontent';
+
+Vue.component("toggle-content-button", {
+  props: ['content', 'content-id'],
+  template: `<button class="button" @click="toggleExpandWorkoutRoutine" ><div v-html="content"></div></button>`,
+  methods: {
+    toggleExpandWorkoutRoutine: function(event) {
+      this.$emit(toggleContent);
+    }
+  }
+
+})
+Vue.component("expandable-card-header", {
+  props: ['title'],
+  template: `
+    <div class="columns is-mobile">
+      <div class="column is-half">
+        <p class="card-header-title has-text-dark has-text-bold is-size-4">
+            {{ title }}
+        </p>
+      </div>
+      <div class="column is-half">
+        <p class="card-header-right-column has-text-dark has-text-bold is-size-4 has-text-right">
+          <toggle-content-button  content="<i class='fa fa-chevron-down fa-lg has-text-dark has-text-bold' aria-hidden='true'></i>"></toggle-content-button>
+        </p>
+      </div>
+  </div>`
+})
+
+Vue.component('workout-routine', {
+  props: ['title', 'content', 'id'],
+  template: `
+  <div class="card">
+    <div class="card-content">
+      <expandable-card-header v-bind:title='title' > </expandable-card-header>
+    </div>
+    <div class="container is-hidden" v-bind:id='id'></div>
+  </div>
+  `,
+  created: function () {
+    this.$on('click', data => {
+      console.log("SUP")
+    })
+  }
+})
+
+
+var app = new Vue({
+  el: "#workoutApp",
+  data: {
+    workoutRoutines: [
+      {title: "Leg Day", content: "content", key: 0},
+      {title: "Back", content: "content", key: 1}
+    ]
+  }
+})
+
 $("#newRoutine").click(e => {
   hideElement($("#routinesDisplay")[0]);
   displayElement($("#newRoutineForm")[0]);

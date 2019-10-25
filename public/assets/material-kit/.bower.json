@@ -1,0 +1,37 @@
+{
+  "name": "material-kit",
+  "homepage": "https://github.com/creativetimofficial/material-kit",
+  "authors": [
+    "creative-tim"
+  ],
+  "description": "A Badass Bootstrap UI Kit based on Material Design",
+  "main": "index.html",
+  "keywords": [
+    "material",
+    "design",
+    "bootstrap",
+    "material",
+    "design",
+    "google",
+    "twitter"
+  ],
+  "license": "Creative TIM License",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "version": "2.0.4",
+  "_release": "2.0.4",
+  "_resolution": {
+    "type": "version",
+    "tag": "v2.0.4",
+    "commit": "005d5cd2d3ed014e294e68755d4fb96883d46ac6"
+  },
+  "_source": "https://github.com/creativetimofficial/material-kit.git",
+  "_target": "^2.0.4",
+  "_originalSource": "material-kit",
+  "_direct": true
+}
